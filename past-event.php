@@ -172,9 +172,7 @@ $rating_info = get_event_rating_info($event_id);
                     <div class="info-card-box" style="margin-bottom:0;">
                         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 8px;">
                             <div style="display:flex; align-items:center; gap:10px;">
-                                <div class="avatar-initials" style="width:30px; height:30px; font-size:11px;">
-                                    <?= e(get_initials($c['user_name'])) ?>
-                                </div>
+                                <?= render_user_avatar(['id' => $c['user_id'], 'name' => $c['user_name']], 30) ?>
                                 <span style="font-size: 14px; font-weight: 700;">
                                     <?= e($c['user_name']) ?> <?= $c['user_id'] == $user_id ? '· You' : '' ?>
                                 </span>

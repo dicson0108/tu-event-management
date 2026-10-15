@@ -152,12 +152,29 @@ function get_event_rating_info(int $event_id): array {
     ];
 }
 
-// Render poster card art or uploaded image
+// Render poster card art or uploaded actual image
 function render_event_poster(array $event, string $size = 'card'): string {
-    if (!empty($event['poster_path']) && file_exists(__DIR__ . '/../' . $event['poster_path'])) {
+    // 1. Explicit poster path in DB
+    if (!empty($event['poster_path']) && file_exists(__DIR__ . '/../' . ltrim($event['poster_path'], '/'))) {
         return '<img src="' . e($event['poster_path']) . '" alt="' . e($event['title']) . '" class="poster-uploaded-img">';
     }
 
+    // 2. Default event image file in assets/images/events/
+    // Use event.jpg specifically for event details; keep event.svg for cards/grids
+    $id = (int)($event['id'] ?? 0);
+    $is_detail = ($size === 'detail') || (basename($_SERVER['PHP_SELF'] ?? '') === 'event-detail.php');
+    $extensions = $is_detail 
+        ? ['jpg', 'jpeg', 'png', 'webp', 'svg'] 
+        : ['svg', 'png', 'jpg', 'webp'];
+
+    foreach ($extensions as $ext) {
+        $imgPath = '/assets/images/events/event-' . $id . '.' . $ext;
+        if (file_exists(__DIR__ . '/..' . $imgPath)) {
+            return '<img src="' . e($imgPath) . '" alt="' . e($event['title']) . '" class="poster-uploaded-img">';
+        }
+    }
+
+    // 3. Fallback to CSS art theme
     $theme = $event['poster_theme'] ?? 'purple';
     $year = date('Y', strtotime($event['event_date'] ?? '2026-10-24'));
     $date_formatted = strtoupper(date('j M Y', strtotime($event['event_date'] ?? '2026-10-24')));
@@ -177,5 +194,50 @@ function render_event_poster(array $event, string $size = 'card'): string {
     $html .= '</div>';
 
     return $html;
+}
+
+// Render user avatar from assets/images/avatars or initials fallback
+function render_user_avatar(array $user, int $size = 32, string $custom_class = ''): string {
+    $uid = (int)($user['id'] ?? 0);
+    $name = $user['preferred_name'] ?? $user['name'] ?? 'User';
+    $initials = get_initials($name);
+    $avatarImg = null;
+
+    if (!empty($user['avatar']) && file_exists(__DIR__ . '/../' . ltrim($user['avatar'], '/'))) {
+        $avatarImg = $user['avatar'];
+    } else {
+        $extensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
+        foreach ($extensions as $ext) {
+            $testPath = '/assets/images/avatars/user-' . $uid . '.' . $ext;
+            if (file_exists(__DIR__ . '/..' . $testPath)) {
+                $avatarImg = $testPath;
+                break;
+            }
+        }
+    }
+
+    if ($avatarImg) {
+        return '<div class="avatar-initials ' . e($custom_class) . '" style="width:' . $size . 'px; height:' . $size . 'px; padding:0; overflow:hidden;"><img src="' . e($avatarImg) . '" alt="' . e($name) . '" style="width:100%; height:100%; object-fit:cover; border-radius:50%;"></div>';
+    }
+
+    return '<div class="avatar-initials ' . e($custom_class) . '" style="width:' . $size . 'px; height:' . $size . 'px;">' . e($initials) . '</div>';
+}
+
+// Render logo (uses actual uploaded image in assets/images/logo/ or fallback icon)
+function get_site_logo_html(): string {
+    $logo_files = [
+        '/assets/images/logo/logo.png',
+        '/assets/images/logo/logo.svg',
+        '/assets/images/logo/logo.jpg',
+        '/assets/images/logo/logo.webp',
+        '/assets/images/logo/taylors-logo.png',
+        '/assets/images/logo/taylors-logo.svg'
+    ];
+    foreach ($logo_files as $lf) {
+        if (file_exists(__DIR__ . '/..' . $lf)) {
+            return '<img src="' . e($lf) . '" alt="Taylor\'s University" class="brand-logo-img">';
+        }
+    }
+    return '<div class="brand-logo-icon" aria-hidden="true">t</div>';
 }
 

@@ -97,7 +97,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
 <?php endif; ?>
 
 <!-- 4 Metrics Counters -->
-<div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 28px;">
+<div class="admin-metrics-grid">
     <div class="info-card-box" style="margin-bottom:0;">
         <div style="font-size: 36px; font-weight: 800; line-height: 1; margin-bottom: 6px;">24</div>
         <div style="font-size: 13px; color: var(--text-secondary);">All events</div>

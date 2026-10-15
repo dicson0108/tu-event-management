@@ -83,9 +83,7 @@ $users = $db->query("SELECT * FROM users ORDER BY created_at DESC")->fetchAll();
                 <tr>
                     <td>
                         <div style="display:flex; align-items:center; gap:10px;">
-                            <div class="avatar-initials" style="width:32px; height:32px; font-size:11px;">
-                                <?= e(get_initials($u['name'])) ?>
-                            </div>
+                            <?= render_user_avatar($u, 32) ?>
                             <div>
                                 <strong style="font-size:14px;"><?= e($u['name']) ?></strong>
                                 <div style="font-size:12px; color:var(--text-muted);"><?= e($u['email']) ?></div>

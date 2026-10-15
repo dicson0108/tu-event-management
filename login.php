@@ -53,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Sample poster for left hero: Lakeside After Hours
 $after_hours_poster = [
+    'id' => 2,
     'title' => 'AFTER HOURS',
     'poster_theme' => 'dark',
     'description' => 'Good music. Great company.',
@@ -66,13 +67,14 @@ $after_hours_poster = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($page_title) ?></title>
     <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/auth.css">
 </head>
 <body style="background: var(--bg-surface-subtle);">
 
 <header class="site-header">
     <div class="header-inner">
         <a href="/index.php" class="brand-group">
-            <div class="brand-logo-icon">t</div>
+            <?= get_site_logo_html() ?>
             <div class="brand-text">
                 <span class="brand-title">Taylor's</span>
                 <span class="brand-subtitle">CAMPUS EVENTS</span>
@@ -172,14 +174,20 @@ $after_hours_poster = [
     <div class="app-container">
         <div class="footer-bottom-bar">
             <span>© 2026 Taylor's University. All rights reserved.</span>
-            <div style="display:flex; gap:20px;">
-                <a href="#" class="footer-link">Privacy policy</a>
-                <a href="#" class="footer-link">Terms of use</a>
+            <div style="display:flex; gap:20px; align-items:center;">
+                <a href="/privacy.php" class="footer-link">Privacy policy</a>
+                <a href="/terms.php" class="footer-link">Terms of use</a>
                 <span style="color:var(--text-muted)">Lakeside Campus, Malaysia</span>
             </div>
         </div>
     </div>
 </footer>
 
+<!-- Floating Back To Top Button -->
+<button type="button" id="back-to-top" class="back-to-top-btn" aria-label="Back to top" title="Back to top">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script src="/assets/js/main.js"></script>
 </body>
 </html>

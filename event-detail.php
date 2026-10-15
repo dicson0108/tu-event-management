@@ -51,7 +51,7 @@ $schedule_items = [
         <!-- Main Column -->
         <div class="event-detail-main">
             <div class="event-detail-poster-wrap">
-                <?= render_event_poster($event) ?>
+                <?= render_event_poster($event, 'detail') ?>
             </div>
 
             <div style="font-size: 12px; font-weight: 700; color: var(--color-primary); letter-spacing: 0.08em; text-transform: uppercase;">
@@ -84,9 +84,7 @@ $schedule_items = [
 
                 <div class="info-card-box">
                     <div style="display:flex; align-items:center; gap:10px; margin-bottom: 12px;">
-                        <div class="avatar-initials" style="width:28px; height:28px; font-size:11px;">
-                            <?= e(get_initials($event['organiser_name'])) ?>
-                        </div>
+                        <?= render_user_avatar(['id' => 1, 'name' => $event['organiser_name']], 28) ?>
                         <span style="font-size: 13.5px; font-weight: 700;"><?= e($event['organiser_name']) ?></span>
                         <span class="badge" style="background:#fee2e2; color:var(--color-primary); font-size:11px;">Organiser</span>
                         <span style="font-size: 12px; color: var(--text-muted); margin-left:auto;">12 Oct 2026</span>

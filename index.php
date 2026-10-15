@@ -37,11 +37,23 @@ $upcoming = $stmt->fetchAll();
                     Big ideas, late-night sets, new friendships. Find the experiences that make Taylor's feel like yours.
                 </p>
 
-                <form action="/events.php" method="GET" class="hero-search-bar">
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted); margin-right:8px;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                    <input type="text" name="q" placeholder="Search events, interests or clubs" class="hero-search-input" aria-label="Search events">
-                    <button type="submit" class="btn-primary" style="padding: 10px 20px;">Find events</button>
+                <form action="/events.php" method="GET" class="hero-search-bar" role="search">
+                    <svg class="hero-search-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <input type="text" name="q" placeholder="Search events, interests or clubs..." class="hero-search-input" aria-label="Search events">
+                    <button type="submit" class="hero-search-btn" aria-label="Find events">
+                        <span>Find events</span>
+                        <svg class="hero-btn-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
                 </form>
+
+                <div class="hero-quick-tags">
+                    <span class="quick-tags-label">Popular:</span>
+                    <a href="/events.php?category=arts-culture" class="quick-tag-chip">🎨 Arts</a>
+                    <a href="/events.php?category=music" class="quick-tag-chip">🎵 Music</a>
+                    <a href="/events.php?category=tech-innovation" class="quick-tag-chip">⚡ Tech & AI</a>
+                    <a href="/events.php?category=careers" class="quick-tag-chip">💼 Career</a>
+                </div>
+
                 <div class="hero-search-sub">Free to discover. Open to the Taylor's community.</div>
             </div>
 
@@ -55,8 +67,9 @@ $upcoming = $stmt->fetchAll();
                                 <?= e(format_event_date($spotlight['event_date'])) ?> · <?= e($spotlight['venue']) ?> · <?= e($spotlight_seats['seats_left']) ?> seats left
                             </div>
                         </div>
-                        <a href="/event-detail.php?id=<?= $spotlight['id'] ?>" class="btn-primary" style="font-size:13px; padding: 8px 14px;">
-                            Explore festival ↗
+                        <a href="/event-detail.php?id=<?= $spotlight['id'] ?>" class="spotlight-cta-btn">
+                            <span>Explore festival</span>
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
                         </a>
                     </div>
                 </div>
@@ -105,8 +118,21 @@ $upcoming = $stmt->fetchAll();
         <div class="events-grid">
             <?php foreach ($upcoming as $event): 
                 $seats = get_event_seat_info((int)$event['id']);
-                $badge_class = $seats['is_full'] ? 'badge-full' : 'badge-open';
-                $badge_label = $seats['is_full'] ? 'Full' : 'Open';
+                $user_status = $current_user ? get_user_event_status((int)$event['id'], (int)$current_user['id']) : null;
+                
+                if ($user_status && $user_status['status'] === 'confirmed') {
+                    $badge_class = 'badge-joined';
+                    $badge_label = 'Joined';
+                } elseif ($user_status && $user_status['status'] === 'waitlisted') {
+                    $badge_class = 'badge-waitlisted';
+                    $badge_label = 'Waitlisted';
+                } elseif ($seats['is_full']) {
+                    $badge_class = 'badge-full';
+                    $badge_label = 'Full';
+                } else {
+                    $badge_class = 'badge-open';
+                    $badge_label = 'Open';
+                }
             ?>
                 <a href="/event-detail.php?id=<?= $event['id'] ?>" class="event-card">
                     <?= render_event_poster($event) ?>
@@ -123,7 +149,9 @@ $upcoming = $stmt->fetchAll();
                     </div>
                     <div class="event-card-footer">
                         <span class="event-seats-status">
-                            <?php if ($seats['is_full']): ?>
+                            <?php if ($user_status && $user_status['status'] === 'waitlisted'): ?>
+                                Waitlist #<?= e($user_status['waitlist_position']) ?>
+                            <?php elseif ($seats['is_full']): ?>
                                 0 seats left · Waitlist open
                             <?php else: ?>
                                 <?= e($seats['seats_left']) ?> seats left

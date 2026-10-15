@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="50%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#c81e27"/>
+    </linearGradient>
+    <radialGradient id="r1" cx="80%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#4f46e5" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#g1)"/>
+  <rect width="800" height="500" fill="url(#r1)"/>
+  <circle cx="680" cy="120" r="160" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="40"/>
+  <circle cx="680" cy="120" r="80" fill="#c81e27"/>
+  <polygon points="120,380 280,180 340,380" fill="rgba(255,255,255,0.08)"/>
+  <rect x="60" y="60" width="680" height="380" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" rx="16"/>
+  <text x="90" y="105" fill="rgba(255,255,255,0.7)" font-family="sans-serif" font-size="12" font-weight="700" letter-spacing="4">TAYLOR'S / CAMPUS CULTURE 2026</text>
+  <text x="90" y="240" fill="#ffffff" font-family="sans-serif" font-size="52" font-weight="900" letter-spacing="-2">DESIGN FUTURES</text>
+  <text x="90" y="295" fill="#ffffff" font-family="sans-serif" font-size="52" font-weight="900" letter-spacing="-2">FESTIVAL</text>
+  <text x="90" y="345" fill="rgba(255,255,255,0.85)" font-family="sans-serif" font-size="16" font-weight="500">Bold ideas, student installations, collaborative studio making</text>
+  <rect x="90" y="385" width="140" height="32" fill="#ffffff" rx="16"/>
+  <text x="160" y="406" fill="#0f172a" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">24 OCT 2026 ↗</text>
+</svg>

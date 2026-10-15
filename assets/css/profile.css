@@ -1,0 +1,76 @@
+/* ==========================================================================
+   Profile Page Styles (profile.css)
+   ========================================================================== */
+
+.profile-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 36px;
+  margin-top: 28px;
+  margin-bottom: 64px;
+}
+
+.avatar-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.avatar-large {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: var(--color-primary);
+  font-size: 24px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+}
+
+.avatar-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-card {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-xs);
+  margin-bottom: 24px;
+}
+
+.profile-card-title {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  margin-bottom: 20px;
+  color: var(--text-main);
+}
+
+.preference-toggle-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.preference-toggle-item:last-child {
+  border-bottom: none;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .profile-grid-layout {
+    grid-template-columns: 1fr;
+  }
+}

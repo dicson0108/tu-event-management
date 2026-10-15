@@ -13,23 +13,26 @@ $current_admin_page = basename($_SERVER['PHP_SELF']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
     <title><?= isset($admin_page_title) ? e($admin_page_title) . " · Taylor's Admin Workspace" : "Admin Workspace · Taylor's Campus Events" ?></title>
+    <!-- Main Core Stylesheet -->
     <link rel="stylesheet" href="/assets/css/style.css">
+    <!-- Admin Workspace Stylesheet -->
+    <link rel="stylesheet" href="/assets/css/admin.css">
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='15' fill='%23C81E27'/><text x='50%' y='68%' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-weight='900' font-size='65' fill='white'>t</text></svg>">
 </head>
 <body style="background:var(--bg-page);">
 
 <div class="admin-shell">
     <!-- Left Sidebar -->
-    <aside class="admin-sidebar">
+    <aside class="admin-sidebar" aria-label="Admin Sidebar">
         <a href="/admin/index.php" class="brand-group">
-            <div class="brand-logo-icon">t</div>
+            <?= get_site_logo_html() ?>
             <div class="brand-text">
                 <span class="brand-title">Taylor's</span>
                 <span class="brand-subtitle">CAMPUS EVENTS / ADMIN</span>
             </div>
         </a>
 
-        <nav class="admin-nav">
+        <nav class="admin-nav" aria-label="Admin Navigation">
             <a href="/admin/index.php" class="admin-nav-item <?= in_array($current_admin_page, ['index.php', 'dashboard.php']) ? 'active' : '' ?>">
                 <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
                 Dashboard
@@ -67,15 +70,17 @@ $current_admin_page = basename($_SERVER['PHP_SELF']);
     <div class="admin-main">
         <!-- Top bar -->
         <header class="admin-topbar">
-            <div style="font-size: 13px; color: var(--text-muted);">
-                Workspace / <span style="color:var(--text-main); font-weight:600;"><?= e($admin_breadcrumb ?? 'Dashboard') ?></span>
+            <div style="display:flex; align-items:center; gap:12px;">
+                <button type="button" class="admin-mobile-toggle" aria-label="Toggle admin sidebar">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <div style="font-size: 13px; color: var(--text-muted);">
+                    Workspace / <span style="color:var(--text-main); font-weight:600;"><?= e($admin_breadcrumb ?? 'Dashboard') ?></span>
+                </div>
             </div>
 
             <div style="display:flex; align-items:center; gap:16px;">
-                <span class="badge" style="background:#fee2e2; color:var(--color-primary); font-size:12px;">Admin</span>
-                <button type="button" aria-label="Notifications" style="background:none; border:none; cursor:pointer; color:var(--text-muted); display:flex;">
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                </button>
+                <span class="badge badge-admin">Admin</span>
                 <div style="font-size:13.5px; font-weight:700; color:var(--text-main);">
                     <?= e($admin_user['name']) ?>
                 </div>

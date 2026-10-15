@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="60%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#g4)"/>
+  <circle cx="660" cy="220" r="130" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+  <circle cx="660" cy="220" r="40" fill="#fbbf24"/>
+  <text x="90" y="105" fill="#93c5fd" font-family="sans-serif" font-size="12" font-weight="700" letter-spacing="3">TAYLOR'S CAREER SERVICES &amp; ALUMNI</text>
+  <text x="90" y="225" fill="#ffffff" font-family="sans-serif" font-size="52" font-weight="900" letter-spacing="-2">YOUR NEXT</text>
+  <text x="90" y="285" fill="#ffffff" font-family="sans-serif" font-size="52" font-weight="900" letter-spacing="-2">CHAPTER</text>
+  <text x="90" y="340" fill="rgba(255,255,255,0.85)" font-family="sans-serif" font-size="16">Connect with top regional recruiters &amp; successful alumni</text>
+  <rect x="90" y="380" width="140" height="32" fill="#fbbf24" rx="16"/>
+  <text x="160" y="401" fill="#0f172a" font-family="sans-serif" font-size="12" font-weight="800" text-anchor="middle">12 NOV 2026 ↗</text>
+</svg>

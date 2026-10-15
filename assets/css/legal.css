@@ -1,0 +1,97 @@
+/* ==========================================================================
+   Legal Pages Styles - Privacy Policy & Terms of Use (legal.css)
+   ========================================================================== */
+
+.legal-layout {
+  padding: 48px 0 80px 0;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.legal-header {
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 28px;
+  margin-bottom: 40px;
+}
+
+.legal-title {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.legal-meta {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.legal-card {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 44px;
+  box-shadow: var(--shadow-sm);
+  line-height: 1.7;
+}
+
+.legal-section {
+  margin-bottom: 36px;
+}
+
+.legal-section:last-child {
+  margin-bottom: 0;
+}
+
+.legal-section-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--text-main);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.legal-section-num {
+  color: var(--color-primary);
+  font-size: 15px;
+}
+
+.legal-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.legal-list {
+  padding-left: 20px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14.5px;
+  color: var(--text-secondary);
+}
+
+.legal-callout {
+  background: var(--color-primary-light);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--text-main);
+  margin: 20px 0;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .legal-card {
+    padding: 24px 20px;
+  }
+  .legal-title {
+    font-size: 32px;
+  }
+}

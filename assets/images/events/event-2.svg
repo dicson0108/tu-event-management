@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16"/>
+      <stop offset="60%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#31102b"/>
+    </linearGradient>
+    <radialGradient id="r2" cx="30%" cy="80%" r="70%">
+      <stop offset="0%" stop-color="#e11d48" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#g2)"/>
+  <rect width="800" height="500" fill="url(#r2)"/>
+  <circle cx="650" cy="180" r="120" fill="#c81e27" opacity="0.85"/>
+  <circle cx="650" cy="180" r="60" fill="#ffffff"/>
+  <path d="M0,420 Q200,390 400,420 T800,420 L800,500 L0,500 Z" fill="rgba(255,255,255,0.06)"/>
+  <path d="M0,450 Q200,430 400,450 T800,450 L800,500 L0,500 Z" fill="rgba(255,255,255,0.08)"/>
+  <text x="90" y="105" fill="rgba(255,255,255,0.65)" font-family="sans-serif" font-size="12" font-weight="700" letter-spacing="4">LAKESIDE AMPHITHEATRE / MUSIC SOCIETY</text>
+  <text x="90" y="230" fill="#ffffff" font-family="sans-serif" font-size="56" font-weight="900" letter-spacing="-2">AFTER HOURS</text>
+  <text x="90" y="285" fill="rgba(255,255,255,0.7)" font-family="sans-serif" font-size="22" font-weight="600">Acoustic sets, live student bands &amp; food trucks</text>
+  <text x="90" y="335" fill="#fb7185" font-family="sans-serif" font-size="15" font-weight="700">Good music. Great company under the stars.</text>
+  <rect x="90" y="375" width="140" height="32" fill="#c81e27" rx="16"/>
+  <text x="160" y="396" fill="#ffffff" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">30 OCT 2026 ↗</text>
+</svg>

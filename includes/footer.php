@@ -5,7 +5,7 @@
         <div class="footer-top-grid">
             <div>
                 <a href="/index.php" class="brand-group" style="margin-bottom: 16px;">
-                    <div class="brand-logo-icon">t</div>
+                    <?= get_site_logo_html() ?>
                     <div class="brand-text">
                         <span class="brand-title">Taylor's</span>
                         <span class="brand-subtitle">CAMPUS EVENTS</span>
@@ -28,23 +28,28 @@
             <div>
                 <h4 class="footer-col-title">Need a hand?</h4>
                 <ul class="footer-links-list">
-                    <li><a href="#" class="footer-link">Help centre</a></li>
-                    <li><a href="#" class="footer-link">Contact Student Life</a></li>
-                    <li><a href="#" class="footer-link">Community guidelines</a></li>
+                    <li><a href="/terms.php" class="footer-link">Community guidelines</a></li>
+                    <li><a href="/privacy.php" class="footer-link">Privacy notice (PDPA)</a></li>
+                    <li><a href="mailto:campuslife@taylors.edu.my" class="footer-link">Contact Student Life</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="footer-bottom-bar">
             <span>© 2026 Taylor's University. All rights reserved.</span>
-            <div style="display:flex; gap:20px;">
-                <a href="#" class="footer-link">Privacy policy</a>
-                <a href="#" class="footer-link">Terms of use</a>
+            <div style="display:flex; gap:20px; align-items:center;">
+                <a href="/privacy.php" class="footer-link">Privacy policy</a>
+                <a href="/terms.php" class="footer-link">Terms of use</a>
                 <span style="color:var(--text-muted)">Lakeside Campus, Malaysia</span>
             </div>
         </div>
     </div>
 </footer>
+
+<!-- Floating Back To Top Button -->
+<button type="button" id="back-to-top" class="back-to-top-btn" aria-label="Back to top" title="Back to top">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
 
 <script src="/assets/js/main.js"></script>
 </body>

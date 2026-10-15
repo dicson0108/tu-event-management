@@ -176,9 +176,7 @@ $attendees = $stmt->fetchAll();
                     <tr>
                         <td>
                             <div style="display:flex; align-items:center; gap:10px;">
-                                <div class="avatar-initials" style="width:32px; height:32px; font-size:11px;">
-                                    <?= e(get_initials($att['name'])) ?>
-                                </div>
+                                <?= render_user_avatar($att, 32) ?>
                                 <div>
                                     <strong style="font-size:14px;"><?= e($att['name']) ?></strong>
                                     <div style="font-size:12px; color:var(--text-muted);"><?= e($att['email']) ?></div>

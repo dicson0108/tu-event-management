@@ -123,9 +123,7 @@ $faculty_list = [
                 <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 20px;">Personal information</h3>
 
                 <div class="avatar-upload-row">
-                    <div class="avatar-large">
-                        <?= e(get_initials($user['preferred_name'] ?? $user['name'])) ?>
-                    </div>
+                    <?= render_user_avatar($user, 68, 'avatar-large') ?>
                     <div>
                         <div style="display:flex; gap:10px; margin-bottom:6px;">
                             <button type="button" class="btn-secondary" style="font-size:13px; padding:6px 14px;">Upload photo</button>
@@ -226,8 +224,8 @@ $faculty_list = [
         <div>
             <div class="info-card-box" style="margin-bottom: 24px;">
                 <div style="display:flex; flex-direction:column; align-items:flex-start; margin-bottom: 20px;">
-                    <div class="avatar-large" style="margin-bottom: 12px;">
-                        <?= e(get_initials($user['preferred_name'] ?? $user['name'])) ?>
+                    <div style="margin-bottom: 12px;">
+                        <?= render_user_avatar($user, 68, 'avatar-large') ?>
                     </div>
                     <h3 style="font-size: 20px; font-weight: 800;"><?= e($user['name']) ?></h3>
                     <span class="badge" style="background:#fee2e2; color:var(--color-primary); margin: 6px 0; font-size:11px;">

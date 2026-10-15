@@ -55,7 +55,7 @@ $recent_feedback = $stmt->fetchAll();
 </div>
 
 <!-- 4 Metrics Cards -->
-<div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 28px;">
+<div class="admin-metrics-grid">
     <div class="info-card-box" style="margin-bottom:0;">
         <div style="font-size:12px; color:var(--text-muted); font-weight:600; margin-bottom: 12px;">Total events</div>
         <div style="font-size: 36px; font-weight: 800; line-height: 1; margin-bottom: 8px;">24</div>
@@ -82,7 +82,7 @@ $recent_feedback = $stmt->fetchAll();
 </div>
 
 <!-- Community Graph & Quick Actions Split -->
-<div style="display:grid; grid-template-columns: 1.6fr 1fr; gap: 24px; margin-bottom: 32px;">
+<div class="admin-split-grid">
     <!-- Registration Chart -->
     <div class="info-card-box" style="margin-bottom:0;">
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 6px;">
