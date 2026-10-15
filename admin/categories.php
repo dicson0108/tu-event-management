@@ -102,7 +102,7 @@ $categories = $db->query("
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="id" value="<?= $c['id'] ?>">
-                                    <button type="submit" style="background:none; border:none; color:#dc2626; cursor:pointer; font-size:12.5px; font-weight:600;">
+                                    <button type="submit" class="action-btn-danger">
                                         Delete
                                     </button>
                                 </form>

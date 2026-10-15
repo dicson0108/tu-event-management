@@ -17,7 +17,7 @@ $current_admin_page = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="/assets/css/style.css">
     <!-- Admin Workspace Stylesheet -->
     <link rel="stylesheet" href="/assets/css/admin.css">
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='15' fill='%23C81E27'/><text x='50%' y='68%' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-weight='900' font-size='65' fill='white'>t</text></svg>">
+    <link rel="icon" type="image/png" href="/assets/images/logo/logo.png">
 </head>
 <body style="background:var(--bg-page);">
 

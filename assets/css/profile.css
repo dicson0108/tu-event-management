@@ -41,17 +41,17 @@
 
 .profile-card {
   background: #ffffff;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: 28px;
-  box-shadow: var(--shadow-xs);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
   margin-bottom: 24px;
 }
 
 .profile-card-title {
-  font-size: 19px;
-  font-weight: 800;
-  letter-spacing: -0.015em;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   margin-bottom: 20px;
   color: var(--text-main);
 }
@@ -61,7 +61,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 0;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .preference-toggle-item:last-child {

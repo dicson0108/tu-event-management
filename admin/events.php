@@ -205,24 +205,17 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
                         <span class="badge <?= $badge_class ?>"><?= $badge_text ?></span>
                     </td>
                     <td style="text-align:right;">
-                        <div style="display:inline-flex; align-items:center; gap:12px; font-size:13px;">
-                            <a href="/admin/attendees.php?id=<?= $ev['id'] ?>" style="color:var(--text-secondary); font-weight:500;">Attendees</a>
-                            <a href="/admin/event-edit.php?id=<?= $ev['id'] ?>" style="color:var(--color-primary); font-weight:600;">Edit</a>
+                        <div style="display:inline-flex; align-items:center; gap:8px;">
+                            <a href="/admin/attendees.php?id=<?= $ev['id'] ?>" class="action-btn-link">Attendees</a>
+                            <a href="/admin/event-edit.php?id=<?= $ev['id'] ?>" class="action-btn-link" style="color:var(--color-primary); font-weight:600;">Edit</a>
 
-                            <?php if ($ev['status'] === 'draft'): ?>
-                                <button type="button" style="background:none; border:none; color:#dc2626; cursor:pointer; font-weight:500;" 
-                                        onclick="openDeleteModal(<?= $ev['id'] ?>, '<?= e(addslashes($ev['title'])) ?>')">
-                                    Delete
-                                </button>
-                            <?php else: ?>
-                                <button type="button" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-weight:500;" 
-                                        onclick="openDeleteModal(<?= $ev['id'] ?>, '<?= e(addslashes($ev['title'])) ?>')">
-                                    Delete
-                                </button>
-                            <?php endif; ?>
+                            <button type="button" class="action-btn-link <?= $ev['status'] === 'draft' ? 'action-btn-danger' : '' ?>" 
+                                    onclick="openDeleteModal(<?= $ev['id'] ?>, '<?= e(addslashes($ev['title'])) ?>')">
+                                Delete
+                            </button>
 
                             <?php if ($ev['status'] === 'published'): ?>
-                                <button type="button" style="background:none; border:none; color:#dc2626; cursor:pointer; font-weight:500;" 
+                                <button type="button" class="action-btn-danger" 
                                         onclick="openCancelModal(<?= $ev['id'] ?>, '<?= e(addslashes($ev['title'])) ?>')">
                                     Cancel event
                                 </button>

@@ -4,6 +4,9 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Enable instantaneous :active state on iOS Safari & mobile devices
+    document.addEventListener('touchstart', () => {}, { passive: true });
+
     // 1. Toast Notification System
     window.showToast = function(message, type = 'info', duration = 3500) {
         let container = document.getElementById('toast-container');

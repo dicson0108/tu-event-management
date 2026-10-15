@@ -16,9 +16,10 @@
 
 .event-detail-poster-wrap {
   margin-bottom: 32px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 6px 24px -4px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .event-detail-poster-wrap .poster-art-wrapper {
@@ -32,34 +33,36 @@
 }
 
 .event-detail-title {
-  font-size: 42px;
+  font-size: 44px;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   margin: 12px 0 16px 0;
-  line-height: 1.15;
+  line-height: 1.12;
   color: var(--text-main);
+  font-optical-sizing: auto;
 }
 
 .event-detail-lead {
-  font-size: 16.5px;
+  font-size: 17px;
   color: var(--text-secondary);
-  line-height: 1.65;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
   margin-bottom: 32px;
 }
 
 .info-card-box {
   background: #ffffff;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: 26px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-xl);
+  padding: 30px;
   margin-bottom: 24px;
-  box-shadow: var(--shadow-xs);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
 }
 
 .info-card-title {
-  font-size: 18.5px;
-  font-weight: 800;
-  letter-spacing: -0.015em;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   margin-bottom: 18px;
   color: var(--text-main);
 }
@@ -107,15 +110,17 @@
   line-height: 1.5;
 }
 
-/* Event Detail Sticky Sidebar Card */
+/* Event Detail Sticky Sidebar Card (Apple Floating Glass Panel) */
 .sticky-reg-card {
   position: sticky;
   top: calc(var(--header-height) + 24px);
-  background: #ffffff;
-  border: 1px solid var(--border-light);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: var(--radius-xl);
-  padding: 28px;
-  box-shadow: var(--shadow-md);
+  padding: 30px;
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.10), 0 4px 14px -2px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   gap: 22px;
@@ -128,18 +133,19 @@
 }
 
 .free-tag {
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 700;
-  color: #059669;
-  background: #ecfdf5;
-  padding: 4px 10px;
+  color: #248a3d;
+  background: rgba(52, 199, 89, 0.14);
+  padding: 4px 12px;
   border-radius: var(--radius-full);
+  letter-spacing: -0.01em;
 }
 
 .reg-card-headline {
   font-size: 24px;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 
 .reg-meta-list {

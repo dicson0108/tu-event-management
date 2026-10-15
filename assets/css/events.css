@@ -2,14 +2,16 @@
    Events Explore Page Styles (events.css)
    ========================================================================== */
 
-/* Search & Filter Bar */
+/* Search & Filter Bar (Apple Frosted Glass Panel) */
 .filter-container {
-  background: #ffffff;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: 24px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-xl);
+  padding: 26px;
   margin-bottom: 36px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .search-field-main {
@@ -35,18 +37,21 @@
 
 .input-text-standard {
   width: 100%;
-  padding: 11px 16px 11px 44px;
-  border: 1px solid var(--border-light);
+  min-height: 44px;
+  padding: 10px 16px 10px 44px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: var(--radius-sm);
   font-size: 14.5px;
+  letter-spacing: -0.01em;
   outline: none;
-  background-color: #ffffff;
-  transition: all var(--transition-fast);
+  background-color: rgba(0, 0, 0, 0.025);
+  transition: all var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .input-text-standard:focus {
+  background-color: #ffffff;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-glow);
+  box-shadow: 0 0 0 3.5px var(--color-primary-glow);
 }
 
 .filter-row {
@@ -71,18 +76,21 @@
 
 .form-select, .form-input {
   width: 100%;
+  min-height: 44px;
   padding: 10px 14px;
-  border: 1px solid var(--border-light);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: var(--radius-sm);
   font-size: 14px;
-  background-color: #ffffff;
+  letter-spacing: -0.01em;
+  background-color: rgba(0, 0, 0, 0.025);
   outline: none;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .form-select:focus, .form-input:focus {
+  background-color: #ffffff;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-glow);
+  box-shadow: 0 0 0 3.5px var(--color-primary-glow);
 }
 
 .filter-results-bar {
@@ -91,6 +99,7 @@
   justify-content: space-between;
   margin-bottom: 24px;
   font-size: 14px;
+  letter-spacing: -0.01em;
   color: var(--text-secondary);
 }
 
@@ -240,29 +249,37 @@
 }
 
 .page-btn {
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border-light);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   background: #ffffff;
   font-size: 13.5px;
   font-weight: 600;
+  letter-spacing: -0.01em;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 38px;
-  transition: all var(--transition-fast);
+  min-height: 42px;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast), transform var(--transition-press);
 }
 
 .page-btn:hover:not(:disabled) {
-  background: var(--bg-surface-subtle);
-  border-color: var(--border-medium);
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.18);
+  box-shadow: var(--shadow-sm);
+}
+
+.page-btn:active:not(:disabled) {
+  transform: scale(0.96);
 }
 
 .page-btn.active {
   background: var(--color-primary);
   color: #ffffff !important;
   border-color: var(--color-primary);
+  box-shadow: 0 2px 8px rgba(200, 30, 39, 0.3);
 }
 
 .page-btn:disabled {

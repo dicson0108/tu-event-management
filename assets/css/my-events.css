@@ -11,12 +11,18 @@
 
 .stat-metric-card {
   background: #ffffff;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  box-shadow: var(--shadow-xs);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-xl);
+  padding: 26px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
   position: relative;
   overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stat-metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .stat-metric-card::before {
@@ -32,27 +38,29 @@
 .stat-metric-label {
   font-size: 13px;
   font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--text-muted);
   margin-bottom: 8px;
 }
 
 .stat-metric-value {
-  font-size: 40px;
+  font-size: 42px;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   color: var(--text-main);
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-metric-sub {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text-secondary);
   margin-top: 10px;
 }
 
 .tab-nav-row {
   display: flex;
-  border-bottom: 1px solid var(--border-light);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   margin-bottom: 28px;
   gap: 32px;
 }
@@ -61,15 +69,20 @@
   padding-bottom: 14px;
   font-size: 14.5px;
   font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--text-muted);
   cursor: pointer;
   position: relative;
   border-bottom: 2px solid transparent;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-fast), transform var(--transition-press);
 }
 
 .tab-item:hover {
   color: var(--text-main);
+}
+
+.tab-item:active {
+  transform: scale(0.97);
 }
 
 .tab-item.active {
@@ -79,21 +92,25 @@
 
 .my-event-list-row {
   background: #ffffff;
-  border: 1px solid var(--border-light);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: var(--radius-lg);
-  padding: 18px 22px;
+  padding: 18px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
-  box-shadow: var(--shadow-xs);
-  transition: all var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
 }
 
 .my-event-list-row:hover {
   box-shadow: var(--shadow-sm);
-  border-color: var(--border-medium);
+  border-color: rgba(0, 0, 0, 0.14);
   transform: translateY(-2px);
+}
+
+.my-event-list-row:active {
+  transform: scale(0.99);
 }
 
 .my-event-list-item {
