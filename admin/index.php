@@ -5,12 +5,6 @@ require_once __DIR__ . '/sidebar.php';
 
 $db = get_db_connection();
 
-// Dynamic or curated stats
-$total_events = (int)$db->query("SELECT COUNT(*) FROM events")->fetchColumn();
-$total_users = (int)$db->query("SELECT COUNT(*) FROM users")->fetchColumn();
-$total_regs = (int)$db->query("SELECT COUNT(*) FROM registrations WHERE status = 'confirmed'")->fetchColumn();
-$total_waitlist = (int)$db->query("SELECT COUNT(*) FROM registrations WHERE status = 'waitlisted'")->fetchColumn();
-
 // Next on campus events
 $stmt = $db->query("
     SELECT e.*, c.name as category_name 

@@ -11,12 +11,6 @@
   padding: 48px 0;
 }
 
-.auth-hero-banner {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
 .auth-form-card {
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(24px) saturate(180%);

@@ -24,13 +24,11 @@ if (isset($_GET['export'])) {
     ";
     if ($event_id > 0) {
         $sql .= " WHERE r.event_id = :eid ORDER BY r.status ASC, r.waitlist_position ASC, r.created_at ASC";
-        $stmt = $db->prepare($sql);
-        $stmt->execute([':eid' => $event_id]);
     } else {
         $sql .= " ORDER BY e.id ASC, r.status ASC, r.created_at ASC";
-        $stmt = $db->prepare($sql);
-        $stmt->execute();
     }
+    $stmt = $db->prepare($sql);
+    $stmt->execute($event_id > 0 ? [':eid' => $event_id] : []);
 
     while ($row = $stmt->fetch()) {
         fputcsv($output, [
@@ -109,13 +107,11 @@ $sql = "
 ";
 if ($event_id > 0) {
     $sql .= " WHERE r.event_id = :eid ORDER BY FIELD(r.status, 'confirmed', 'waitlisted', 'cancelled'), r.waitlist_position ASC, r.created_at ASC";
-    $stmt = $db->prepare($sql);
-    $stmt->execute([':eid' => $event_id]);
 } else {
     $sql .= " ORDER BY e.event_date DESC, r.created_at DESC";
-    $stmt = $db->prepare($sql);
-    $stmt->execute();
 }
+$stmt = $db->prepare($sql);
+$stmt->execute($event_id > 0 ? [':eid' => $event_id] : []);
 $attendees = $stmt->fetchAll();
 ?>
 

@@ -67,49 +67,6 @@
   color: var(--text-main);
 }
 
-/* Schedule Timeline */
-.schedule-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  position: relative;
-  padding-left: 20px;
-  border-left: 2px solid var(--border-light);
-  margin-left: 10px;
-}
-
-.timeline-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  font-size: 14.5px;
-  position: relative;
-}
-
-.timeline-row::before {
-  content: '';
-  position: absolute;
-  left: -26px;
-  top: 6px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: var(--color-primary);
-  box-shadow: 0 0 0 3px #ffffff;
-}
-
-.timeline-time {
-  font-weight: 700;
-  color: var(--color-primary);
-  width: 85px;
-  flex-shrink: 0;
-}
-
-.timeline-desc {
-  color: var(--text-main);
-  line-height: 1.5;
-}
-
 /* Event Detail Sticky Sidebar Card (Apple Floating Glass Panel) */
 .sticky-reg-card {
   position: sticky;
@@ -195,15 +152,6 @@
 
 .star-icon.active {
   color: var(--color-primary);
-}
-
-/* Discussion & Comments */
-.comment-item-card {
-  padding: 18px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-light);
-  background: var(--bg-surface-subtle);
-  margin-bottom: 14px;
 }
 
 /* Responsive */

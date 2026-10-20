@@ -18,7 +18,7 @@ $css_map = [
     'privacy.php' => 'legal.css',
     'terms.php' => 'legal.css',
 ];
-$page_css = $extra_css ?? $css_map[$current_page] ?? null;
+$page_css = $css_map[$current_page] ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="en">

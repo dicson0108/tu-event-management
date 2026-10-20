@@ -20,11 +20,6 @@ function is_logged_in(): bool {
     return !empty($_SESSION['user_id']);
 }
 
-function is_admin(): bool {
-    start_session_safe();
-    return !empty($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
-}
-
 function current_user(): ?array {
     start_session_safe();
     if (!is_logged_in()) {
@@ -55,9 +50,6 @@ function login_user(array $user): void {
     start_session_safe();
     session_regenerate_id(true);
     $_SESSION['user_id'] = (int) $user['id'];
-    $_SESSION['role'] = $user['role'];
-    $_SESSION['name'] = $user['name'];
-    $_SESSION['email'] = $user['email'];
 }
 
 function logout_user(): void {

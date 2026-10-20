@@ -30,11 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, duration);
     };
 
-    // 2. Confirmation Dialog (native prompt fallback or dialog)
-    window.showConfirm = function({ message = 'Are you sure you want to proceed?' } = {}) {
-        return Promise.resolve(window.confirm(message));
-    };
-
     // 3. User dropdown menu toggle & keyboard accessibility
     const userMenuPill = document.querySelector('.user-menu-pill');
     const userDropdown = document.querySelector('.user-dropdown');
@@ -59,17 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (mobileMenuBtn && mobileDrawer) {
         const toggleDrawer = (open) => {
-            if (open) {
-                mobileDrawer.classList.add('open');
-                if (mobileDrawerBackdrop) mobileDrawerBackdrop.classList.add('open');
-                mobileMenuBtn.setAttribute('aria-expanded', 'true');
-                document.body.style.overflow = 'hidden';
-            } else {
-                mobileDrawer.classList.remove('open');
-                if (mobileDrawerBackdrop) mobileDrawerBackdrop.classList.remove('open');
-                mobileMenuBtn.setAttribute('aria-expanded', 'false');
-                document.body.style.overflow = '';
-            }
+            mobileDrawer.classList.toggle('open', open);
+            mobileDrawerBackdrop?.classList.toggle('open', open);
+            mobileMenuBtn.setAttribute('aria-expanded', String(open));
+            document.body.style.overflow = open ? 'hidden' : '';
         };
 
         mobileMenuBtn.addEventListener('click', () => toggleDrawer(!mobileDrawer.classList.contains('open')));
@@ -91,19 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6. Modal Open & Close Handlers (General Modals)
-    document.querySelectorAll('[data-modal-open]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const modalId = btn.getAttribute('data-modal-open');
-            const targetModal = document.getElementById(modalId);
-            if (targetModal) {
-                targetModal.classList.add('show');
-                const firstInput = targetModal.querySelector('input:not([type="hidden"]), textarea, select, button');
-                if (firstInput) firstInput.focus();
-            }
-        });
-    });
-
+    // 6. Modal Close Handlers
     document.querySelectorAll('[data-modal-close]').forEach(btn => {
         btn.addEventListener('click', () => {
             const modal = btn.closest('.modal-backdrop');
@@ -146,13 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (ratingInput) ratingInput.value = val;
                 stars.forEach(s => {
                     const sVal = parseInt(s.getAttribute('data-val'), 10);
-                    if (sVal <= val) {
-                        s.classList.add('active');
-                        s.style.color = '#c81e27';
-                    } else {
-                        s.classList.remove('active');
-                        s.style.color = '#d1d5db';
-                    }
+                    s.classList.toggle('active', sVal <= val);
+                    s.style.color = sVal <= val ? '#c81e27' : '#d1d5db';
                 });
             });
         });
@@ -167,16 +138,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const csrfToken = btn.getAttribute('data-csrf') || document.querySelector('meta[name="csrf-token"]')?.content;
 
             const isLeaveAction = action.includes('leave');
-            const actionVerb = action.replace('-', ' ');
-            const confirmed = await window.showConfirm({
-                title: isLeaveAction ? 'Leave Event' : 'Event Registration',
-                message: isLeaveAction 
+            const confirmed = window.confirm(
+                isLeaveAction
                     ? `Are you sure you want to cancel your spot? Your seat will be offered to waitlisted members.`
-                    : `Confirm registration for this event?`,
-                confirmText: isLeaveAction ? 'Yes, cancel spot' : 'Confirm spot',
-                cancelText: 'Go back',
-                isDanger: isLeaveAction
-            });
+                    : `Confirm registration for this event?`
+            );
 
             if (!confirmed) return;
 
@@ -216,11 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToTopBtn = document.getElementById('back-to-top');
     if (backToTopBtn) {
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTopBtn.classList.add('visible');
-            } else {
-                backToTopBtn.classList.remove('visible');
-            }
+            backToTopBtn.classList.toggle('visible', window.scrollY > 300);
         }, { passive: true });
 
         backToTopBtn.addEventListener('click', () => {

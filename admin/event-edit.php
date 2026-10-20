@@ -78,18 +78,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf_token($_POST['csrf_toke
     } elseif (!$is_new && $capacity < $seats['confirmed']) {
         $error = "Capacity cannot be lower than the current {$seats['confirmed']} confirmed registrations.";
     } else {
+        $params = [
+            ':t' => $title, ':d' => $description, ':c' => $category_id, ':ed' => $event_date,
+            ':st' => $start_time, ':et' => $end_time, ':f' => $format, ':v' => $venue,
+            ':ol' => $online_link, ':cap' => $capacity, ':pp' => $poster_path, ':pt' => $poster_theme,
+            ':s' => $status, ':aw' => $allow_waitlist, ':on' => $organiser_name, ':oe' => $organiser_email,
+        ];
         if ($is_new) {
             $stmt = $db->prepare("
                 INSERT INTO events (title, description, category_id, event_date, start_time, end_time, format, venue, online_link, capacity, poster_path, poster_theme, status, allow_waitlist, organiser_name, organiser_email, created_by)
                 VALUES (:t, :d, :c, :ed, :st, :et, :f, :v, :ol, :cap, :pp, :pt, :s, :aw, :on, :oe, :cb)
             ");
-            $stmt->execute([
-                ':t' => $title, ':d' => $description, ':c' => $category_id, ':ed' => $event_date,
-                ':st' => $start_time, ':et' => $end_time, ':f' => $format, ':v' => $venue,
-                ':ol' => $online_link, ':cap' => $capacity, ':pp' => $poster_path, ':pt' => $poster_theme,
-                ':s' => $status, ':aw' => $allow_waitlist, ':on' => $organiser_name, ':oe' => $organiser_email,
-                ':cb' => $admin_user['id']
-            ]);
+            $stmt->execute($params + [':cb' => $admin_user['id']]);
             $new_id = $db->lastInsertId();
             header("Location: " . app_url("/admin/event-edit.php?id=") . $new_id . "&saved=1");
             exit;
@@ -102,13 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf_token($_POST['csrf_toke
                     allow_waitlist = :aw, organiser_name = :on, organiser_email = :oe, updated_at = NOW()
                 WHERE id = :id
             ");
-            $stmt->execute([
-                ':t' => $title, ':d' => $description, ':c' => $category_id, ':ed' => $event_date,
-                ':st' => $start_time, ':et' => $end_time, ':f' => $format, ':v' => $venue,
-                ':ol' => $online_link, ':cap' => $capacity, ':pp' => $poster_path, ':pt' => $poster_theme,
-                ':s' => $status, ':aw' => $allow_waitlist, ':on' => $organiser_name, ':oe' => $organiser_email,
-                ':id' => $event_id
-            ]);
+            $stmt->execute($params + [':id' => $event_id]);
             $msg = "Event updated successfully.";
             // Reload
             $stmt = $db->prepare("SELECT * FROM events WHERE id = :id");

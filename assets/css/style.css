@@ -9,12 +9,8 @@
 
   /* Surfaces & Backgrounds */
   --bg-page: #f5f5f7;
-  --bg-surface: #ffffff;
   --bg-surface-subtle: #fbfbfd;
-  --bg-surface-elevated: #ffffff;
-  --bg-surface-glass: rgba(255, 255, 255, 0.78);
   --bg-surface-card: #ffffff;
-  --bg-dark-accent: #1d1d1f;
 
   /* Apple-Calibrated Typography Colors */
   --text-main: #1d1d1f;
@@ -58,9 +54,6 @@
   /* Apple Hairline & Surface Borders */
   --border-subtle: rgba(0, 0, 0, 0.04);
   --border-light: rgba(0, 0, 0, 0.08);
-  --border-medium: rgba(0, 0, 0, 0.14);
-  --border-glass: rgba(255, 255, 255, 0.6);
-  --border-focus: #c81e27;
 
   /* Apple Continuous Squircle Radii */
   --radius-xs: 6px;
@@ -83,7 +76,6 @@
   --transition-press: 0.12s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-fast: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-normal: 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-spring: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ==========================================================================
@@ -760,67 +752,20 @@ img {
   transform: translateY(0) scale(1);
 }
 
-.toast-icon {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.toast-content {
-  flex-grow: 1;
-  line-height: 1.4;
-}
-
-.toast-close {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: all var(--transition-fast);
-}
-
-.toast-close:hover {
-  color: var(--text-main);
-  background-color: rgba(0, 0, 0, 0.06);
-}
-
 .toast-success {
   border-left: 4px solid #34c759;
-}
-
-.toast-success .toast-icon {
-  color: #34c759;
 }
 
 .toast-error {
   border-left: 4px solid #d70015;
 }
 
-.toast-error .toast-icon {
-  color: #d70015;
-}
-
 .toast-warning {
   border-left: 4px solid #ff9500;
 }
 
-.toast-warning .toast-icon {
-  color: #ff9500;
-}
-
 .toast-info {
   border-left: 4px solid var(--color-primary);
-}
-
-.toast-info .toast-icon {
-  color: var(--color-primary);
 }
 
 /* ==========================================================================
