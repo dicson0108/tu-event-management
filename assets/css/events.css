@@ -27,12 +27,17 @@
   align-items: center;
 }
 
+.search-input-wrap .input-text-standard {
+  padding-left: 46px;
+}
+
 .search-icon-inside {
   position: absolute;
   left: 16px;
   width: 18px;
   height: 18px;
   color: var(--text-muted);
+  pointer-events: none;
 }
 
 .filter-row {
