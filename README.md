@@ -66,6 +66,11 @@ define('DB_PORT', 3306);
 ```
 
 ### 4. Run the Application
+For XAMPP with the project in `C:\xampp\htdocs\TUEventManagement`, open
+`http://localhost/TUEventManagement/`. The shared URL prefix is configured as
+`APP_BASE_PATH` in `config/app.php`. Set it to an empty string when serving the
+project at a domain root, including the built-in PHP server below.
+
 Start the built-in PHP development server in the project root:
 
 ```bash

@@ -90,7 +90,7 @@ require_once __DIR__ . '/includes/header.php';
                     <span class="legal-section-num">06.</span> Your Rights & Contact Information
                 </h2>
                 <p class="legal-text">
-                    Under the PDPA 2010, you have the right to request access to and correction of your personal data, or request restriction of data processing. You can update your profile information directly in <a href="/profile.php" style="color:var(--color-primary); font-weight:600;">My Profile</a>.
+                    Under the PDPA 2010, you have the right to request access to and correction of your personal data, or request restriction of data processing. You can update your profile information directly in <a href="<?= APP_BASE_PATH ?>/profile.php" style="color:var(--color-primary); font-weight:600;">My Profile</a>.
                 </p>
                 <p class="legal-text">
                     For inquiries or privacy concerns, please contact our Data Protection Liaison:

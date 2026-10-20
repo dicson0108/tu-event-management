@@ -80,16 +80,17 @@ $grow_poster = [
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="app-base-path" content="<?= APP_BASE_PATH ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($page_title) ?></title>
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="/assets/css/auth.css">
+    <link rel="stylesheet" href="<?= APP_BASE_PATH ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?= APP_BASE_PATH ?>/assets/css/auth.css">
 </head>
 <body style="background: var(--bg-surface-subtle);">
 
 <header class="site-header">
     <div class="header-inner">
-        <a href="/index.php" class="brand-group">
+        <a href="<?= APP_BASE_PATH ?>/index.php" class="brand-group">
             <?= get_site_logo_html() ?>
             <div class="brand-text">
                 <span class="brand-title">Taylor's</span>
@@ -98,14 +99,14 @@ $grow_poster = [
         </a>
 
         <nav class="nav-links">
-            <a href="/index.php" class="nav-link">Home</a>
-            <a href="/events.php" class="nav-link">Explore events</a>
-            <a href="/my-events.php" class="nav-link">My events</a>
+            <a href="<?= APP_BASE_PATH ?>/index.php" class="nav-link">Home</a>
+            <a href="<?= APP_BASE_PATH ?>/events.php" class="nav-link">Explore events</a>
+            <a href="<?= APP_BASE_PATH ?>/my-events.php" class="nav-link">My events</a>
         </nav>
 
         <div class="nav-actions">
-            <a href="/login.php" class="btn-link">Log in</a>
-            <a href="/register.php" class="btn-primary">Register</a>
+            <a href="<?= APP_BASE_PATH ?>/login.php" class="btn-link">Log in</a>
+            <a href="<?= APP_BASE_PATH ?>/register.php" class="btn-primary">Register</a>
         </div>
     </div>
 </header>
@@ -153,7 +154,7 @@ $grow_poster = [
                         Log in with <strong><?= e($success_user['email']) ?></strong> and start exploring your campus community.
                     </p>
 
-                    <a href="/login.php" class="btn-primary" style="width:100%; padding:12px; font-size:15px; justify-content:center;">
+                    <a href="<?= APP_BASE_PATH ?>/login.php" class="btn-primary" style="width:100%; padding:12px; font-size:15px; justify-content:center;">
                         Continue to login
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                     </a>
@@ -178,7 +179,7 @@ $grow_poster = [
                     </div>
 
                     <div style="margin-top: 24px; display:flex; flex-direction:column; gap:16px;">
-                        <a href="/login.php" class="btn-primary" style="padding:12px; font-size:14px; justify-content:center;">
+                        <a href="<?= APP_BASE_PATH ?>/login.php" class="btn-primary" style="padding:12px; font-size:14px; justify-content:center;">
                             Go to login
                         </a>
                         <a href="#" style="color:var(--color-primary); font-size:13.5px; font-weight:600;">
@@ -193,7 +194,7 @@ $grow_poster = [
                     <h2 class="auth-card-title">Create your account</h2>
                 </div>
                 <p class="auth-card-sub">
-                    Already part of the community? <a href="/login.php" style="color:var(--color-primary); font-weight:600;">Log in</a>
+                    Already part of the community? <a href="<?= APP_BASE_PATH ?>/login.php" style="color:var(--color-primary); font-weight:600;">Log in</a>
                 </p>
 
                 <?php if (!empty($errors['general'])): ?>
@@ -202,7 +203,7 @@ $grow_poster = [
                     </div>
                 <?php endif; ?>
 
-                <form method="POST" action="/register.php">
+                <form method="POST" action="<?= APP_BASE_PATH ?>/register.php">
                     <?= csrf_field() ?>
 
                     <div class="form-field">
@@ -267,8 +268,8 @@ $grow_poster = [
         <div class="footer-bottom-bar">
             <span>© 2026 Taylor's University. All rights reserved.</span>
             <div style="display:flex; gap:20px; align-items:center;">
-                <a href="/privacy.php" class="footer-link">Privacy policy</a>
-                <a href="/terms.php" class="footer-link">Terms of use</a>
+                <a href="<?= APP_BASE_PATH ?>/privacy.php" class="footer-link">Privacy policy</a>
+                <a href="<?= APP_BASE_PATH ?>/terms.php" class="footer-link">Terms of use</a>
                 <span style="color:var(--text-muted)">Lakeside Campus, Malaysia</span>
             </div>
         </div>
@@ -280,6 +281,6 @@ $grow_poster = [
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
-<script src="/assets/js/main.js"></script>
+<script src="<?= APP_BASE_PATH ?>/assets/js/main.js"></script>
 </body>
 </html>

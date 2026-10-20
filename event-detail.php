@@ -17,7 +17,7 @@ $stmt->execute([':id' => $event_id]);
 $event = $stmt->fetch();
 
 if (!$event) {
-    echo '<div class="app-container" style="padding: 64px 0; text-align:center;"><h2>Event not found</h2><p><a href="/events.php" class="btn-primary" style="margin-top:16px;">Back to events</a></p></div>';
+    echo '<div class="app-container" style="padding: 64px 0; text-align:center;"><h2>Event not found</h2><p><a href="' . app_url('/events.php') . '" class="btn-primary" style="margin-top:16px;">Back to events</a></p></div>';
     require_once __DIR__ . '/includes/footer.php';
     exit;
 }
@@ -30,20 +30,59 @@ $rating_info = get_event_rating_info($event_id);
 $is_past = strtotime($event['event_date']) < strtotime(date('Y-m-d'));
 $day_of_week = date('l', strtotime($event['event_date']));
 
-// Schedule mockup items
-$schedule_items = [
-    ['time' => '10:00 AM', 'desc' => 'Doors open & student showcase'],
-    ['time' => '11:00 AM', 'desc' => 'Future by design · keynote with guest speakers'],
-    ['time' => '2:00 PM', 'desc' => 'Hands-on studio sessions & interactive workshops'],
-    ['time' => '4:00 PM', 'desc' => 'Creative connections & closing showcase']
-];
+$user_id = $user ? (int)$user['id'] : 0;
+
+// Check attendance & comment
+$attendance = false;
+$user_comment = null;
+if ($user_id) {
+    $stmt = $db->prepare("SELECT * FROM registrations WHERE event_id = :eid AND user_id = :uid AND status = 'confirmed'");
+    $stmt->execute([':eid' => $event_id, ':uid' => $user_id]);
+    $attendance = (bool)$stmt->fetch();
+
+    $stmt = $db->prepare("SELECT * FROM comments WHERE event_id = :eid AND user_id = :uid LIMIT 1");
+    $stmt->execute([':eid' => $event_id, ':uid' => $user_id]);
+    $user_comment = $stmt->fetch();
+}
+
+// Handle feedback submit
+$feedback_msg = null;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'save_feedback' && verify_csrf_token($_POST['csrf_token'] ?? '')) {
+    $rating = (int)($_POST['rating'] ?? 5);
+    $comment_text = trim($_POST['comment'] ?? '');
+    if ($rating >= 1 && $rating <= 5 && !empty($comment_text) && $user_id) {
+        if ($user_comment) {
+            $upd = $db->prepare("UPDATE comments SET rating = :r, comment = :c, updated_at = NOW() WHERE id = :id");
+            $upd->execute([':r' => $rating, ':c' => $comment_text, ':id' => $user_comment['id']]);
+        } else {
+            $ins = $db->prepare("INSERT INTO comments (event_id, user_id, rating, comment) VALUES (:eid, :uid, :r, :c)");
+            $ins->execute([':eid' => $event_id, ':uid' => $user_id, ':r' => $rating, ':c' => $comment_text]);
+        }
+        $feedback_msg = "Feedback saved successfully.";
+        $stmt = $db->prepare("SELECT * FROM comments WHERE event_id = :eid AND user_id = :uid LIMIT 1");
+        $stmt->execute([':eid' => $event_id, ':uid' => $user_id]);
+        $user_comment = $stmt->fetch();
+        $rating_info = get_event_rating_info($event_id);
+    }
+}
+
+// Fetch community comments
+$stmt = $db->prepare("
+    SELECT c.*, u.name as user_name, u.preferred_name, u.role as user_role
+    FROM comments c
+    JOIN users u ON c.user_id = u.id
+    WHERE c.event_id = :eid
+    ORDER BY c.created_at DESC
+");
+$stmt->execute([':eid' => $event_id]);
+$comments = $stmt->fetchAll();
 ?>
 
 <div class="app-container" style="padding-top: 24px;">
     <!-- Breadcrumbs -->
     <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">
-        <a href="/events.php" style="color:var(--text-secondary)">Explore events</a> / 
-        <a href="/events.php?category=<?= urlencode($event['category_slug']) ?>" style="color:var(--text-secondary)"><?= e($event['category_name']) ?></a> / 
+        <a href="<?= APP_BASE_PATH ?>/events.php" style="color:var(--text-secondary)">Explore events</a> /
+        <a href="<?= APP_BASE_PATH ?>/events.php?category=<?= urlencode($event['category_slug']) ?>" style="color:var(--text-secondary)"><?= e($event['category_name']) ?></a> /
         <span style="color:var(--text-main)"><?= e($event['title']) ?></span>
     </div>
 
@@ -62,16 +101,19 @@ $schedule_items = [
 
             <p class="event-detail-lead"><?= nl2br(e($event['description'])) ?></p>
 
-            <!-- Schedule section -->
+            <!-- Time & Venue overview -->
             <div class="info-card-box">
-                <h3 class="info-card-title">The day at a glance</h3>
-                <div class="schedule-timeline">
-                    <?php foreach ($schedule_items as $item): ?>
-                        <div class="timeline-row">
-                            <div class="timeline-time"><?= e($item['time']) ?></div>
-                            <div class="timeline-desc"><?= e($item['desc']) ?></div>
-                        </div>
-                    <?php endforeach; ?>
+                <h3 class="info-card-title">Event Timing & Venue</h3>
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                    <div style="display:flex; align-items:center; gap:12px; font-size:14.5px;">
+                        <strong>Date:</strong> <span><?= e(format_event_full_date($event['event_date'])) ?></span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; font-size:14.5px;">
+                        <strong>Time:</strong> <span><?= e(format_event_time_range($event['start_time'], $event['end_time'])) ?></span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; font-size:14.5px;">
+                        <strong>Location:</strong> <span><?= e($event['venue'] ?: 'Online') ?></span>
+                    </div>
                 </div>
             </div>
 
@@ -79,7 +121,7 @@ $schedule_items = [
             <div style="margin-top: 24px;">
                 <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 16px;">
                     <h3 style="font-size: 20px; font-weight: 800;">Before you go</h3>
-                    <span style="font-size: 12px; color: var(--text-muted);">2 organiser updates</span>
+                    <span style="font-size: 12px; color: var(--text-muted);">Organiser notes</span>
                 </div>
 
                 <div class="info-card-box">
@@ -87,20 +129,106 @@ $schedule_items = [
                         <?= render_user_avatar(['id' => 1, 'name' => $event['organiser_name']], 28) ?>
                         <span style="font-size: 13.5px; font-weight: 700;"><?= e($event['organiser_name']) ?></span>
                         <span class="badge" style="background:#fee2e2; color:var(--color-primary); font-size:11px;">Organiser</span>
-                        <span style="font-size: 12px; color: var(--text-muted); margin-left:auto;">12 Oct 2026</span>
                     </div>
-                    <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5;">
-                        Studio materials are provided. Bring a reusable water bottle and arrive 15 minutes early to check in at the Grand Hall foyer.
-                    </p>
-                    <hr style="border:none; border-top:1px solid var(--border-subtle); margin: 16px 0;">
                     <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">
-                        The student showcase is open all day. You're welcome to move between sessions at your own pace.
+                        Please bring your student ID and arrive 10–15 minutes early to check in smoothly. For online sessions, ensure your camera and microphone are ready.
                     </p>
                 </div>
+            </div>
 
-                <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 8px;">
-                    Ratings and feedback open after the event for joined attendees. For questions now, contact the organiser above.
-                </p>
+            <!-- Feedback & Community Reviews Section -->
+            <div id="reviews" style="margin-top: 36px;">
+                <?php if ($feedback_msg): ?>
+                    <div class="status-alert-box success" style="margin-bottom: 20px;">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                        <div><?= e($feedback_msg) ?></div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($attendance && $is_past): ?>
+                    <div class="info-card-box" id="feedback-form" style="margin-bottom: 28px;">
+                        <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 8px;"><?= $user_comment ? 'Edit your review' : 'Rate this event' ?></h3>
+                        <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 20px;">
+                            You attended this event. Your experience helps organisers make the next one even better.
+                        </p>
+                        <form method="POST" action="<?= APP_BASE_PATH ?>/event-detail.php?id=<?= $event['id'] ?>#reviews">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="action" value="save_feedback">
+                            <div style="margin-bottom: 16px;">
+                                <label class="form-label" style="margin-bottom: 8px; display:block;">Your rating</label>
+                                <input type="hidden" name="rating" id="selected-rating-input" value="<?= (int)($user_comment['rating'] ?? 5) ?>">
+                                <div class="star-rating-selector" style="display:flex; gap:6px; font-size:24px; cursor:pointer;">
+                                    <?php 
+                                    $cur_rating = (int)($user_comment['rating'] ?? 5);
+                                    for ($i = 1; $i <= 5; $i++): 
+                                    ?>
+                                        <span class="star-icon <?= $i <= $cur_rating ? 'active' : '' ?>" data-val="<?= $i ?>" style="color: <?= $i <= $cur_rating ? '#c81e27' : '#d1d5db' ?>;">★</span>
+                                    <?php endfor; ?>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label class="form-label" style="margin-bottom: 8px; display:block;">Your feedback</label>
+                                <textarea name="comment" rows="3" class="form-input" required placeholder="Share your experience..." style="resize:vertical;"><?= e($user_comment['comment'] ?? '') ?></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary" style="padding: 10px 20px;">Save feedback</button>
+                        </form>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Community Reviews List -->
+                <div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 16px;">
+                        <h3 style="font-size: 20px; font-weight: 800;">Community feedback</h3>
+                        <span style="font-size: 13px; color: var(--text-muted);">
+                            <?= count($comments) ?> <?= count($comments) === 1 ? 'review' : 'reviews' ?>
+                            <?php if ($rating_info['formatted']): ?>
+                                · <?= $rating_info['formatted'] ?> / 5 ★
+                            <?php endif; ?>
+                        </span>
+                    </div>
+
+                    <?php if (empty($comments)): ?>
+                        <div style="background:#fff; border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:28px; text-align:center; color:var(--text-muted); font-size:14px;">
+                            No reviews submitted yet for this event.
+                        </div>
+                    <?php else: ?>
+                        <div style="display:flex; flex-direction:column; gap:16px;">
+                            <?php foreach ($comments as $c): ?>
+                                <div class="info-card-box" style="margin-bottom:0;">
+                                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 8px;">
+                                        <div style="display:flex; align-items:center; gap:10px;">
+                                            <?= render_user_avatar(['id' => $c['user_id'], 'name' => $c['user_name']], 30) ?>
+                                            <span style="font-size: 14px; font-weight: 700;">
+                                                <?= e($c['user_name']) ?> <?= ($user_id && $c['user_id'] == $user_id) ? '· You' : '' ?>
+                                            </span>
+                                        </div>
+                                        <span style="font-size: 12px; color: var(--text-muted);">
+                                            <?= e(format_event_date($c['created_at'])) ?>
+                                        </span>
+                                    </div>
+                                    <div style="color: #c81e27; font-size: 15px; margin-bottom: 8px;">
+                                        <?= str_repeat('★', (int)$c['rating']) ?>
+                                    </div>
+                                    <p style="font-size: 14px; color: var(--text-main); line-height: 1.5; margin-bottom: 8px;">
+                                        <?= e($c['comment']) ?>
+                                    </p>
+                                    <?php if ($user_id && $c['user_id'] == $user_id): ?>
+                                        <div style="display:flex; align-items:center; gap:14px; font-size:12.5px; margin-top:8px;">
+                                            <a href="#feedback-form" style="color:var(--color-primary); font-weight:600;">Edit</a>
+                                            <form method="POST" action="<?= APP_BASE_PATH ?>/api/comments.php" onsubmit="return confirm('Delete your comment?');" style="display:inline;">
+                                                <?= csrf_field() ?>
+                                                <input type="hidden" name="action" value="delete">
+                                                <input type="hidden" name="comment_id" value="<?= $c['id'] ?>">
+                                                <input type="hidden" name="redirect" value="<?= APP_BASE_PATH ?>/event-detail.php?id=<?= $event['id'] ?>#reviews">
+                                                <button type="submit" style="background:none; border:none; color:#dc2626; cursor:pointer; font-weight:600; padding:0;">Delete</button>
+                                            </form>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
 
@@ -144,9 +272,9 @@ $schedule_items = [
                     <div class="reg-meta-item">
                         <svg class="reg-meta-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                         <div>
-                            <div style="font-weight:600;"><?= e($seats['confirmed']) ?> / <?= e($seats['capacity']) ?> registered</div>
+                            <div style="font-weight:600;"><?= e($seats['confirmed_count']) ?> of <?= e($seats['capacity']) ?> places reserved</div>
                             <div style="font-size:12px; color:var(--text-muted);">
-                                <?= e($seats['seats_left']) ?> seats left · <?= e($seats['waitlisted']) ?> waitlisted
+                                <?= $seats['spots_left'] > 0 ? e($seats['spots_left']) . ' spots remaining' : 'Event currently full' ?>
                             </div>
                         </div>
                     </div>
@@ -155,14 +283,14 @@ $schedule_items = [
                         <svg class="reg-meta-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                         <div>
                             <div style="font-weight:600;"><?= $rating_info['formatted'] ? $rating_info['formatted'] . ' / 5 organiser rating' : '4.8 / 5 organiser rating' ?></div>
-                            <div style="font-size:12px; color:var(--text-muted);">Based on past attendee reviews</div>
+                            <div style="font-size:12px; color:var(--text-muted);">Based on attendee reviews</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="reg-action-area">
                     <?php if (!$user): ?>
-                        <a href="/login.php?redirect=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="btn-primary" style="width:100%;">
+                        <a href="<?= APP_BASE_PATH ?>/login.php?redirect=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="btn-primary" style="width:100%;">
                             Log in to join event ↗
                         </a>
                     <?php elseif ($user_status && $user_status['status'] === 'confirmed'): ?>
@@ -173,9 +301,11 @@ $schedule_items = [
                                 <div>Your registration is confirmed. Find it in My events.</div>
                             </div>
                         </div>
-                        <button type="button" class="btn-secondary" style="width:100%;" data-action-event="leave" data-event-id="<?= $event['id'] ?>">
-                            Leave event
-                        </button>
+                        <?php if (!$is_past): ?>
+                            <button type="button" class="btn-secondary" style="width:100%;" data-action-event="leave" data-event-id="<?= $event['id'] ?>">
+                                Leave event
+                            </button>
+                        <?php endif; ?>
                     <?php elseif ($user_status && $user_status['status'] === 'waitlisted'): ?>
                         <div class="status-alert-box danger">
                             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
@@ -187,6 +317,10 @@ $schedule_items = [
                         <button type="button" class="btn-secondary" style="width:100%;" data-action-event="leave-waitlist" data-event-id="<?= $event['id'] ?>">
                             Leave waitlist
                         </button>
+                    <?php elseif ($is_past): ?>
+                        <div class="status-alert-box info" style="background:#f1f5f9; color:var(--text-secondary); border:1px solid var(--border-light);">
+                            This event has already taken place.
+                        </div>
                     <?php elseif ($seats['is_full']): ?>
                         <?php if ($seats['allow_waitlist']): ?>
                             <button type="button" class="btn-primary" style="width:100%;" data-action-event="join-waitlist" data-event-id="<?= $event['id'] ?>">

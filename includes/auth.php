@@ -76,12 +76,12 @@ function logout_user(): void {
 function require_login(?string $redirect = null): array {
     if (!is_logged_in()) {
         $target = $redirect ?? $_SERVER['REQUEST_URI'] ?? '/';
-        header("Location: /login.php?redirect=" . urlencode($target));
+        header("Location: " . app_url("/login.php?redirect=") . urlencode($target));
         exit;
     }
     $user = current_user();
     if (!$user) {
-        header("Location: /login.php?msg=" . urlencode("Account inactive or not found"));
+        header("Location: " . app_url("/login.php?msg=") . urlencode("Account inactive or not found"));
         exit;
     }
     return $user;

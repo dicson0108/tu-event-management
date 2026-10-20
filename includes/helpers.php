@@ -156,7 +156,7 @@ function get_event_rating_info(int $event_id): array {
 function render_event_poster(array $event, string $size = 'card'): string {
     // 1. Explicit poster path in DB
     if (!empty($event['poster_path']) && file_exists(__DIR__ . '/../' . ltrim($event['poster_path'], '/'))) {
-        return '<img src="' . e($event['poster_path']) . '" alt="' . e($event['title']) . '" class="poster-uploaded-img">';
+        return '<img src="' . e(app_url($event['poster_path'])) . '" alt="' . e($event['title']) . '" class="poster-uploaded-img">';
     }
 
     // 2. Default event image file in assets/images/events/
@@ -170,7 +170,7 @@ function render_event_poster(array $event, string $size = 'card'): string {
     foreach ($extensions as $ext) {
         $imgPath = '/assets/images/events/event-' . $id . '.' . $ext;
         if (file_exists(__DIR__ . '/..' . $imgPath)) {
-            return '<img src="' . e($imgPath) . '" alt="' . e($event['title']) . '" class="poster-uploaded-img">';
+            return '<img src="' . e(app_url($imgPath)) . '" alt="' . e($event['title']) . '" class="poster-uploaded-img">';
         }
     }
 
@@ -217,7 +217,7 @@ function render_user_avatar(array $user, int $size = 32, string $custom_class = 
     }
 
     if ($avatarImg) {
-        return '<div class="avatar-initials ' . e($custom_class) . '" style="width:' . $size . 'px; height:' . $size . 'px; padding:0; overflow:hidden;"><img src="' . e($avatarImg) . '" alt="' . e($name) . '" style="width:100%; height:100%; object-fit:cover; border-radius:50%;"></div>';
+        return '<div class="avatar-initials ' . e($custom_class) . '" style="width:' . $size . 'px; height:' . $size . 'px; padding:0; overflow:hidden;"><img src="' . e(app_url($avatarImg)) . '" alt="' . e($name) . '" style="width:100%; height:100%; object-fit:cover; border-radius:50%;"></div>';
     }
 
     return '<div class="avatar-initials ' . e($custom_class) . '" style="width:' . $size . 'px; height:' . $size . 'px;">' . e($initials) . '</div>';
@@ -225,19 +225,17 @@ function render_user_avatar(array $user, int $size = 32, string $custom_class = 
 
 // Render logo (uses actual uploaded image in assets/images/logo/ or fallback icon)
 function get_site_logo_html(): string {
-    $logo_files = [
-        '/assets/images/logo/logo.png',
-        '/assets/images/logo/logo.svg',
-        '/assets/images/logo/logo.jpg',
-        '/assets/images/logo/logo.webp',
-        '/assets/images/logo/taylors-logo.png',
-        '/assets/images/logo/taylors-logo.svg'
-    ];
-    foreach ($logo_files as $lf) {
-        if (file_exists(__DIR__ . '/..' . $lf)) {
-            return '<img src="' . e($lf) . '" alt="Taylor\'s University" class="brand-logo-img">';
-        }
+    static $logo_html = null;
+    if ($logo_html !== null) {
+        return $logo_html;
     }
-    return '<div class="brand-logo-icon" aria-hidden="true">t</div>';
+
+    $logo_path = '/assets/images/logo/logo.png';
+    if (file_exists(__DIR__ . '/..' . $logo_path)) {
+        $logo_html = '<img src="' . e(app_url($logo_path)) . '" alt="Taylor\'s University" class="brand-logo-img">';
+    } else {
+        $logo_html = '<div class="brand-logo-icon" aria-hidden="true">t</div>';
+    }
+    return $logo_html;
 }
 

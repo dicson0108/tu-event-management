@@ -37,7 +37,7 @@ $upcoming = $stmt->fetchAll();
                     Big ideas, late-night sets, new friendships. Find the experiences that make Taylor's feel like yours.
                 </p>
 
-                <form action="/events.php" method="GET" class="hero-search-bar" role="search">
+                <form action="<?= APP_BASE_PATH ?>/events.php" method="GET" class="hero-search-bar" role="search">
                     <svg class="hero-search-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                     <input type="text" name="q" placeholder="Search events, interests or clubs..." class="hero-search-input" aria-label="Search events">
                     <button type="submit" class="hero-search-btn" aria-label="Find events">
@@ -48,10 +48,10 @@ $upcoming = $stmt->fetchAll();
 
                 <div class="hero-quick-tags">
                     <span class="quick-tags-label">Popular:</span>
-                    <a href="/events.php?category=arts-culture" class="quick-tag-chip">🎨 Arts</a>
-                    <a href="/events.php?category=music" class="quick-tag-chip">🎵 Music</a>
-                    <a href="/events.php?category=tech-innovation" class="quick-tag-chip">⚡ Tech & AI</a>
-                    <a href="/events.php?category=careers" class="quick-tag-chip">💼 Career</a>
+                    <a href="<?= APP_BASE_PATH ?>/events.php?category=arts-culture" class="quick-tag-chip">🎨 Arts</a>
+                    <a href="<?= APP_BASE_PATH ?>/events.php?category=music" class="quick-tag-chip">🎵 Music</a>
+                    <a href="<?= APP_BASE_PATH ?>/events.php?category=tech-innovation" class="quick-tag-chip">⚡ Tech & AI</a>
+                    <a href="<?= APP_BASE_PATH ?>/events.php?category=careers" class="quick-tag-chip">💼 Career</a>
                 </div>
 
                 <div class="hero-search-sub">Free to discover. Open to the Taylor's community.</div>
@@ -67,7 +67,7 @@ $upcoming = $stmt->fetchAll();
                                 <?= e(format_event_date($spotlight['event_date'])) ?> · <?= e($spotlight['venue']) ?> · <?= e($spotlight_seats['seats_left']) ?> seats left
                             </div>
                         </div>
-                        <a href="/event-detail.php?id=<?= $spotlight['id'] ?>" class="spotlight-cta-btn">
+                        <a href="<?= APP_BASE_PATH ?>/event-detail.php?id=<?= $spotlight['id'] ?>" class="spotlight-cta-btn">
                             <span>Explore festival</span>
                             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
                         </a>
@@ -80,7 +80,7 @@ $upcoming = $stmt->fetchAll();
     <!-- Categories Strip -->
     <section class="category-strip">
         <?php foreach ($cats as $cat): ?>
-            <a href="/events.php?category=<?= urlencode($cat['slug']) ?>" class="category-tile">
+            <a href="<?= APP_BASE_PATH ?>/events.php?category=<?= urlencode($cat['slug']) ?>" class="category-tile">
                 <div class="cat-icon">
                     <?php if ($cat['slug'] === 'arts-culture'): ?>
                         <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2Z"/></svg>
@@ -109,7 +109,7 @@ $upcoming = $stmt->fetchAll();
                 <h2 class="section-title">Coming up on campus</h2>
                 <p class="section-desc">Make space in your calendar for something good.</p>
             </div>
-            <a href="/events.php" class="btn-secondary">
+            <a href="<?= APP_BASE_PATH ?>/events.php" class="btn-secondary">
                 View all events 
                 <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
@@ -134,7 +134,7 @@ $upcoming = $stmt->fetchAll();
                     $badge_label = 'Open';
                 }
             ?>
-                <a href="/event-detail.php?id=<?= $event['id'] ?>" class="event-card">
+                <a href="<?= APP_BASE_PATH ?>/event-detail.php?id=<?= $event['id'] ?>" class="event-card">
                     <?= render_event_poster($event) ?>
                     <div class="event-card-body">
                         <div class="event-card-meta-top">
@@ -174,7 +174,7 @@ $upcoming = $stmt->fetchAll();
             <p style="font-size: 15px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px;">
                 From your first workshop to your next standing ovation, a little curiosity can go a long way. Your Taylor's email is all you need to get started.
             </p>
-            <a href="/register.php" class="btn-primary">
+            <a href="<?= APP_BASE_PATH ?>/register.php" class="btn-primary">
                 Join the community
                 <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>

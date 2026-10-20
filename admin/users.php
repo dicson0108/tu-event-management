@@ -95,7 +95,7 @@ $users = $db->query("SELECT * FROM users ORDER BY created_at DESC")->fetchAll();
                         <div style="font-size:12px; color:var(--text-muted);"><?= e($u['phone'] ?: 'No phone') ?></div>
                     </td>
                     <td>
-                        <form method="POST" action="/admin/users.php" style="display:inline;">
+                        <form method="POST" action="<?= APP_BASE_PATH ?>/admin/users.php" style="display:inline;">
                             <?= csrf_field() ?>
                             <input type="hidden" name="action" value="toggle_role">
                             <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
@@ -106,7 +106,7 @@ $users = $db->query("SELECT * FROM users ORDER BY created_at DESC")->fetchAll();
                         </form>
                     </td>
                     <td>
-                        <form method="POST" action="/admin/users.php" style="display:inline;">
+                        <form method="POST" action="<?= APP_BASE_PATH ?>/admin/users.php" style="display:inline;">
                             <?= csrf_field() ?>
                             <input type="hidden" name="action" value="toggle_status">
                             <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
@@ -121,7 +121,7 @@ $users = $db->query("SELECT * FROM users ORDER BY created_at DESC")->fetchAll();
                     </td>
                     <td style="text-align:right;">
                         <?php if ($u['id'] !== $admin_user['id']): ?>
-                            <form method="POST" action="/admin/users.php" onsubmit="return confirm('Permanently delete user account?');" style="display:inline;">
+                            <form method="POST" action="<?= APP_BASE_PATH ?>/admin/users.php" onsubmit="return confirm('Permanently delete user account?');" style="display:inline;">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="user_id" value="<?= $u['id'] ?>">

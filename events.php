@@ -94,7 +94,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
 
     <!-- Filter Form -->
     <div class="filter-container">
-        <form method="GET" action="/events.php">
+        <form method="GET" action="<?= APP_BASE_PATH ?>/events.php">
             <div class="search-field-main">
                 <div class="search-input-wrap">
                     <svg class="search-icon-inside" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
@@ -138,7 +138,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
                 </div>
 
                 <div>
-                    <a href="/events.php" class="btn-link" style="color:var(--color-primary); font-size:13px; font-weight:600; padding-bottom:10px; display:inline-block;">Reset filters</a>
+                    <a href="<?= APP_BASE_PATH ?>/events.php" class="btn-link" style="color:var(--color-primary); font-size:13px; font-weight:600; padding-bottom:10px; display:inline-block;">Reset filters</a>
                 </div>
             </div>
         </form>
@@ -152,7 +152,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
 
         <div class="sort-group">
             <span style="font-size:13px; color:var(--text-muted)">Sort by</span>
-            <form method="GET" action="/events.php" style="display:inline-flex; align-items:center; gap:8px;">
+            <form method="GET" action="<?= APP_BASE_PATH ?>/events.php" style="display:inline-flex; align-items:center; gap:8px;">
                 <input type="hidden" name="q" value="<?= e($search) ?>">
                 <input type="hidden" name="category" value="<?= e($category_slug) ?>">
                 <input type="hidden" name="date" value="<?= e($date_filter) ?>">
@@ -163,7 +163,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
                     <option value="popular" <?= $sort === 'popular' ? 'selected' : '' ?>>Most popular</option>
                 </select>
             </form>
-            <a href="/events.php?sort=popular" class="btn-link" style="font-size:13px; color:var(--color-primary); font-weight:600;">Most popular</a>
+            <a href="<?= APP_BASE_PATH ?>/events.php?sort=popular" class="btn-link" style="font-size:13px; color:var(--color-primary); font-weight:600;">Most popular</a>
         </div>
     </div>
 
@@ -172,7 +172,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
         <div style="background:#fff; border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:64px; text-align:center; margin:32px 0;">
             <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">No events found</h3>
             <p style="color:var(--text-muted); font-size:14px; margin-bottom:20px;">Try adjusting your filters or search keywords.</p>
-            <a href="/events.php" class="btn-primary">Clear all filters</a>
+            <a href="<?= APP_BASE_PATH ?>/events.php" class="btn-primary">Clear all filters</a>
         </div>
     <?php else: ?>
         <div class="events-grid">
@@ -195,7 +195,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
                     $badge_label = 'Open';
                 }
             ?>
-                <a href="/event-detail.php?id=<?= $event['id'] ?>" class="event-card">
+                <a href="<?= APP_BASE_PATH ?>/event-detail.php?id=<?= $event['id'] ?>" class="event-card">
                     <?= render_event_poster($event) ?>
                     <div class="event-card-body">
                         <div class="event-card-meta-top">

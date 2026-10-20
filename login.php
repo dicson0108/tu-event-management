@@ -6,9 +6,9 @@ require_once __DIR__ . '/includes/helpers.php';
 if (is_logged_in()) {
     $user = current_user();
     if ($user && $user['role'] === 'admin') {
-        header("Location: /admin/index.php");
+        header("Location: " . app_url("/admin/index.php"));
     } else {
-        header("Location: /events.php");
+        header("Location: " . app_url("/events.php"));
     }
     exit;
 }
@@ -16,7 +16,7 @@ if (is_logged_in()) {
 $page_title = "Log in · Taylor's Campus Events";
 $error = null;
 $email_val = trim($_POST['email'] ?? '');
-$redirect = $_GET['redirect'] ?? $_POST['redirect'] ?? '/events.php';
+$redirect = $_GET['redirect'] ?? $_POST['redirect'] ?? app_url('/events.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     login_user($user);
                     if ($user['role'] === 'admin' && empty($_GET['redirect'])) {
-                        header("Location: /admin/index.php");
+                        header("Location: " . app_url("/admin/index.php"));
                     } else {
                         header("Location: " . $redirect);
                     }
@@ -64,16 +64,17 @@ $after_hours_poster = [
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="app-base-path" content="<?= APP_BASE_PATH ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($page_title) ?></title>
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="/assets/css/auth.css">
+    <link rel="stylesheet" href="<?= APP_BASE_PATH ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?= APP_BASE_PATH ?>/assets/css/auth.css">
 </head>
 <body style="background: var(--bg-surface-subtle);">
 
 <header class="site-header">
     <div class="header-inner">
-        <a href="/index.php" class="brand-group">
+        <a href="<?= APP_BASE_PATH ?>/index.php" class="brand-group">
             <?= get_site_logo_html() ?>
             <div class="brand-text">
                 <span class="brand-title">Taylor's</span>
@@ -82,14 +83,14 @@ $after_hours_poster = [
         </a>
 
         <nav class="nav-links">
-            <a href="/index.php" class="nav-link">Home</a>
-            <a href="/events.php" class="nav-link">Explore events</a>
-            <a href="/my-events.php" class="nav-link">My events</a>
+            <a href="<?= APP_BASE_PATH ?>/index.php" class="nav-link">Home</a>
+            <a href="<?= APP_BASE_PATH ?>/events.php" class="nav-link">Explore events</a>
+            <a href="<?= APP_BASE_PATH ?>/my-events.php" class="nav-link">My events</a>
         </nav>
 
         <div class="nav-actions">
-            <a href="/login.php" class="btn-link" style="color:var(--text-main); font-weight:600;">Log in</a>
-            <a href="/register.php" class="btn-primary">Register</a>
+            <a href="<?= APP_BASE_PATH ?>/login.php" class="btn-link" style="color:var(--text-main); font-weight:600;">Log in</a>
+            <a href="<?= APP_BASE_PATH ?>/register.php" class="btn-primary">Register</a>
         </div>
     </div>
 </header>
@@ -129,7 +130,7 @@ $after_hours_poster = [
                 </div>
             <?php endif; ?>
 
-            <form method="POST" action="/login.php">
+            <form method="POST" action="<?= APP_BASE_PATH ?>/login.php">
                 <?= csrf_field() ?>
                 <input type="hidden" name="redirect" value="<?= e($redirect) ?>">
 
@@ -159,7 +160,7 @@ $after_hours_poster = [
                 </button>
 
                 <div style="text-align:center; font-size: 13.5px; color: var(--text-secondary); padding-top: 16px; border-top: 1px solid var(--border-subtle);">
-                    New to campus events? <a href="/register.php" style="color:var(--color-primary); font-weight:600;">Create an account</a>
+                    New to campus events? <a href="<?= APP_BASE_PATH ?>/register.php" style="color:var(--color-primary); font-weight:600;">Create an account</a>
                 </div>
 
                 <div style="font-size: 11.5px; color: var(--text-muted); text-align:center; margin-top: 12px; line-height: 1.4;">
@@ -175,8 +176,8 @@ $after_hours_poster = [
         <div class="footer-bottom-bar">
             <span>© 2026 Taylor's University. All rights reserved.</span>
             <div style="display:flex; gap:20px; align-items:center;">
-                <a href="/privacy.php" class="footer-link">Privacy policy</a>
-                <a href="/terms.php" class="footer-link">Terms of use</a>
+                <a href="<?= APP_BASE_PATH ?>/privacy.php" class="footer-link">Privacy policy</a>
+                <a href="<?= APP_BASE_PATH ?>/terms.php" class="footer-link">Terms of use</a>
                 <span style="color:var(--text-muted)">Lakeside Campus, Malaysia</span>
             </div>
         </div>
@@ -188,6 +189,6 @@ $after_hours_poster = [
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
-<script src="/assets/js/main.js"></script>
+<script src="<?= APP_BASE_PATH ?>/assets/js/main.js"></script>
 </body>
 </html>

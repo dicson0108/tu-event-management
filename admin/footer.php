@@ -12,6 +12,6 @@
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
-<script src="/assets/js/main.js"></script>
+<script src="<?= APP_BASE_PATH ?>/assets/js/main.js"></script>
 </body>
 </html>

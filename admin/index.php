@@ -48,7 +48,7 @@ $recent_feedback = $stmt->fetchAll();
         </p>
     </div>
 
-    <a href="/admin/event-edit.php" class="btn-primary" style="padding: 10px 20px; font-size: 14px;">
+    <a href="<?= APP_BASE_PATH ?>/admin/event-edit.php" class="btn-primary" style="padding: 10px 20px; font-size: 14px;">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Create event
     </a>
@@ -118,7 +118,7 @@ $recent_feedback = $stmt->fetchAll();
     <div class="info-card-box" style="margin-bottom:0;">
         <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 20px;">Quick actions</h3>
         <div style="display:flex; flex-direction:column; gap:12px;">
-            <a href="/admin/event-edit.php" class="btn-secondary" style="justify-content:space-between; padding:12px 16px; font-weight:600;">
+            <a href="<?= APP_BASE_PATH ?>/admin/event-edit.php" class="btn-secondary" style="justify-content:space-between; padding:12px 16px; font-weight:600;">
                 <span style="display:flex; align-items:center; gap:8px;">
                     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                     Create a new event
@@ -126,7 +126,7 @@ $recent_feedback = $stmt->fetchAll();
                 <span>↗</span>
             </a>
 
-            <a href="/admin/events.php" class="btn-secondary" style="justify-content:space-between; padding:12px 16px; font-weight:600;">
+            <a href="<?= APP_BASE_PATH ?>/admin/events.php" class="btn-secondary" style="justify-content:space-between; padding:12px 16px; font-weight:600;">
                 <span style="display:flex; align-items:center; gap:8px;">
                     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
                     Manage all events
@@ -134,7 +134,7 @@ $recent_feedback = $stmt->fetchAll();
                 <span>↗</span>
             </a>
 
-            <a href="/admin/users.php" class="btn-secondary" style="justify-content:space-between; padding:12px 16px; font-weight:600;">
+            <a href="<?= APP_BASE_PATH ?>/admin/users.php" class="btn-secondary" style="justify-content:space-between; padding:12px 16px; font-weight:600;">
                 <span style="display:flex; align-items:center; gap:8px;">
                     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                     View campus users
@@ -142,7 +142,7 @@ $recent_feedback = $stmt->fetchAll();
                 <span>↗</span>
             </a>
 
-            <a href="/admin/comments.php" class="btn-secondary" style="justify-content:space-between; padding:12px 16px; font-weight:600;">
+            <a href="<?= APP_BASE_PATH ?>/admin/comments.php" class="btn-secondary" style="justify-content:space-between; padding:12px 16px; font-weight:600;">
                 <span style="display:flex; align-items:center; gap:8px;">
                     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                     Review comments
@@ -157,7 +157,7 @@ $recent_feedback = $stmt->fetchAll();
 <div class="info-card-box" style="margin-bottom: 32px;">
     <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 20px;">
         <h3 style="font-size: 18px; font-weight: 800;">Next on campus</h3>
-        <a href="/admin/events.php" style="font-size: 13px; color: var(--color-primary); font-weight: 600;">
+        <a href="<?= APP_BASE_PATH ?>/admin/events.php" style="font-size: 13px; color: var(--color-primary); font-weight: 600;">
             Manage events →
         </a>
     </div>
@@ -195,7 +195,7 @@ $recent_feedback = $stmt->fetchAll();
 <div class="info-card-box">
     <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 20px;">
         <h3 style="font-size: 18px; font-weight: 800;">Recent community feedback</h3>
-        <a href="/admin/comments.php" style="font-size: 13px; color: var(--color-primary); font-weight: 600;">
+        <a href="<?= APP_BASE_PATH ?>/admin/comments.php" style="font-size: 13px; color: var(--color-primary); font-weight: 600;">
             View all comments →
         </a>
     </div>

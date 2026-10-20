@@ -30,7 +30,7 @@ if (!$is_new) {
     if ($existing) {
         $event = $existing;
     } else {
-        header("Location: /admin/events.php");
+        header("Location: " . app_url("/admin/events.php"));
         exit;
     }
 }
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf_token($_POST['csrf_toke
                 ':cb' => $admin_user['id']
             ]);
             $new_id = $db->lastInsertId();
-            header("Location: /admin/event-edit.php?id=" . $new_id . "&saved=1");
+            header("Location: " . app_url("/admin/event-edit.php?id=") . $new_id . "&saved=1");
             exit;
         } else {
             $stmt = $db->prepare("
@@ -127,7 +127,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
 
 <!-- Breadcrumbs -->
 <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
-    <a href="/admin/events.php" style="color:var(--text-secondary);">Manage events</a> / 
+    <a href="<?= APP_BASE_PATH ?>/admin/events.php" style="color:var(--text-secondary);">Manage events</a> /
     <?php if (!$is_new): ?>
         <span><?= e($event['title']) ?></span> / 
     <?php endif; ?>
@@ -147,7 +147,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
         </p>
     </div>
 
-    <a href="/admin/events.php" class="btn-secondary">
+    <a href="<?= APP_BASE_PATH ?>/admin/events.php" class="btn-secondary">
         ← Back to events
     </a>
 </div>
@@ -166,7 +166,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
     </div>
 <?php endif; ?>
 
-<form method="POST" action="/admin/event-edit.php<?= !$is_new ? '?id=' . $event_id : '' ?>" enctype="multipart/form-data">
+<form method="POST" action="<?= APP_BASE_PATH ?>/admin/event-edit.php<?= !$is_new ? '?id=' . $event_id : '' ?>" enctype="multipart/form-data">
     <?= csrf_field() ?>
 
     <div style="display:grid; grid-template-columns: 1fr 340px; gap: 32px; align-items:start;">
@@ -319,7 +319,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
                 </button>
 
                 <?php if (!$is_new): ?>
-                    <a href="/event-detail.php?id=<?= $event['id'] ?>" target="_blank" class="btn-secondary" style="width:100%; justify-content:center; padding:10px; font-size:13px; margin-bottom:16px;">
+                    <a href="<?= APP_BASE_PATH ?>/event-detail.php?id=<?= $event['id'] ?>" target="_blank" class="btn-secondary" style="width:100%; justify-content:center; padding:10px; font-size:13px; margin-bottom:16px;">
                         Preview event ↗
                     </a>
                 <?php endif; ?>
@@ -367,7 +367,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
                         <?= $seats['confirmed'] ?> registered attendees. <?= $seats['waitlisted'] ?> waitlisted. Consider cancellation instead of deleting a published event.
                     </p>
 
-                    <a href="/admin/attendees.php?id=<?= $event['id'] ?>" class="btn-secondary" style="width:100%; justify-content:center; margin-bottom:12px; font-size:13px;">
+                    <a href="<?= APP_BASE_PATH ?>/admin/attendees.php?id=<?= $event['id'] ?>" class="btn-secondary" style="width:100%; justify-content:center; margin-bottom:12px; font-size:13px;">
                         Manage attendees
                     </a>
                 </div>

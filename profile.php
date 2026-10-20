@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/auth.php';
-$user = require_login('/profile.php');
+$user = require_login(app_url('/profile.php'));
 $page_title = "My profile · A little about you";
 require_once __DIR__ . '/includes/header.php';
 
@@ -133,7 +133,7 @@ $faculty_list = [
                     </div>
                 </div>
 
-                <form method="POST" action="/profile.php">
+                <form method="POST" action="<?= APP_BASE_PATH ?>/profile.php">
                     <?= csrf_field() ?>
                     <input type="hidden" name="form_action" value="update_profile">
 
@@ -190,7 +190,7 @@ $faculty_list = [
                     Choose a password you don't use on another account.
                 </p>
 
-                <form method="POST" action="/profile.php">
+                <form method="POST" action="<?= APP_BASE_PATH ?>/profile.php">
                     <?= csrf_field() ?>
                     <input type="hidden" name="form_action" value="change_password">
 
@@ -260,7 +260,7 @@ $faculty_list = [
                     </div>
                 </div>
 
-                <a href="/my-events.php" class="btn-secondary" style="width:100%; font-size:13px; justify-content:center;">
+                <a href="<?= APP_BASE_PATH ?>/my-events.php" class="btn-secondary" style="width:100%; font-size:13px; justify-content:center;">
                     View My events 
                     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </a>

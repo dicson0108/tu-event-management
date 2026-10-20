@@ -133,11 +133,11 @@ $attendees = $stmt->fetchAll();
     </div>
 
     <div style="display:flex; gap:12px;">
-        <a href="/admin/attendees.php?export=1<?= $event_id ? '&id=' . $event_id : '' ?>" class="btn-primary" style="font-size:13px; padding:10px 16px;">
+        <a href="<?= APP_BASE_PATH ?>/admin/attendees.php?export=1<?= $event_id ? '&id=' . $event_id : '' ?>" class="btn-primary" style="font-size:13px; padding:10px 16px;">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Export to CSV
         </a>
-        <a href="/admin/events.php" class="btn-secondary" style="font-size:13px;">
+        <a href="<?= APP_BASE_PATH ?>/admin/events.php" class="btn-secondary" style="font-size:13px;">
             ← Back to events
         </a>
     </div>
@@ -189,7 +189,7 @@ $attendees = $stmt->fetchAll();
                         </td>
                         <?php if (!$event_id): ?>
                             <td>
-                                <a href="/admin/event-edit.php?id=<?= $att['event_id'] ?>" style="color:var(--color-primary); font-weight:600;">
+                                <a href="<?= APP_BASE_PATH ?>/admin/event-edit.php?id=<?= $att['event_id'] ?>" style="color:var(--color-primary); font-weight:600;">
                                     <?= e($att['event_title']) ?>
                                 </a>
                             </td>
@@ -209,7 +209,7 @@ $attendees = $stmt->fetchAll();
                         <td style="text-align:right;">
                             <div style="display:inline-flex; align-items:center; gap:10px;">
                                 <?php if ($att['reg_status'] === 'waitlisted'): ?>
-                                    <form method="POST" action="/admin/attendees.php<?= $event_id ? '?id=' . $event_id : '' ?>" style="display:inline;">
+                                    <form method="POST" action="<?= APP_BASE_PATH ?>/admin/attendees.php<?= $event_id ? '?id=' . $event_id : '' ?>" style="display:inline;">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="action" value="promote">
                                         <input type="hidden" name="reg_id" value="<?= $att['reg_id'] ?>">
@@ -219,7 +219,7 @@ $attendees = $stmt->fetchAll();
                                     </form>
                                 <?php endif; ?>
 
-                                <form method="POST" action="/admin/attendees.php<?= $event_id ? '?id=' . $event_id : '' ?>" onsubmit="return confirm('Remove this attendee? If confirmed, next waitlisted person will be automatically promoted.');" style="display:inline;">
+                                <form method="POST" action="<?= APP_BASE_PATH ?>/admin/attendees.php<?= $event_id ? '?id=' . $event_id : '' ?>" onsubmit="return confirm('Remove this attendee? If confirmed, next waitlisted person will be automatically promoted.');" style="display:inline;">
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="action" value="remove">
                                     <input type="hidden" name="reg_id" value="<?= $att['reg_id'] ?>">

@@ -176,33 +176,6 @@
   margin-top: 10px;
 }
 
-.status-alert-box {
-  padding: 16px;
-  border-radius: var(--radius-md);
-  font-size: 14px;
-  display: flex;
-  gap: 12px;
-  line-height: 1.5;
-}
-
-.status-alert-box.success {
-  background-color: var(--badge-open-bg);
-  border: 1px solid #a7f3d0;
-  color: #065f46;
-}
-
-.status-alert-box.warning {
-  background-color: #fffbeb;
-  border: 1px solid #fde68a;
-  color: #92400e;
-}
-
-.status-alert-box.danger {
-  background-color: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
-}
-
 /* Star Rating Selector */
 .star-rating-selector {
   display: inline-flex;

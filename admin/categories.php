@@ -98,7 +98,7 @@ $categories = $db->query("
                         </td>
                         <td style="text-align:right;">
                             <?php if ($c['event_count'] == 0): ?>
-                                <form method="POST" action="/admin/categories.php" onsubmit="return confirm('Delete category?');" style="display:inline;">
+                                <form method="POST" action="<?= APP_BASE_PATH ?>/admin/categories.php" onsubmit="return confirm('Delete category?');" style="display:inline;">
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="id" value="<?= $c['id'] ?>">
@@ -119,7 +119,7 @@ $categories = $db->query("
     <!-- Add Category Card -->
     <div class="info-card-box">
         <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 16px;">Add category</h3>
-        <form method="POST" action="/admin/categories.php">
+        <form method="POST" action="<?= APP_BASE_PATH ?>/admin/categories.php">
             <?= csrf_field() ?>
             <input type="hidden" name="action" value="add">
 

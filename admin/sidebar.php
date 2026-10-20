@@ -10,21 +10,22 @@ $current_admin_page = basename($_SERVER['PHP_SELF']);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="app-base-path" content="<?= APP_BASE_PATH ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
     <title><?= isset($admin_page_title) ? e($admin_page_title) . " · Taylor's Admin Workspace" : "Admin Workspace · Taylor's Campus Events" ?></title>
     <!-- Main Core Stylesheet -->
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?= APP_BASE_PATH ?>/assets/css/style.css">
     <!-- Admin Workspace Stylesheet -->
-    <link rel="stylesheet" href="/assets/css/admin.css">
-    <link rel="icon" type="image/png" href="/assets/images/logo/logo.png">
+    <link rel="stylesheet" href="<?= APP_BASE_PATH ?>/assets/css/admin.css">
+    <link rel="icon" type="image/png" href="<?= APP_BASE_PATH ?>/assets/images/logo/logo.png">
 </head>
 <body style="background:var(--bg-page);">
 
 <div class="admin-shell">
     <!-- Left Sidebar -->
     <aside class="admin-sidebar" aria-label="Admin Sidebar">
-        <a href="/admin/index.php" class="brand-group">
+        <a href="<?= APP_BASE_PATH ?>/admin/index.php" class="brand-group">
             <?= get_site_logo_html() ?>
             <div class="brand-text">
                 <span class="brand-title">Taylor's</span>
@@ -33,30 +34,30 @@ $current_admin_page = basename($_SERVER['PHP_SELF']);
         </a>
 
         <nav class="admin-nav" aria-label="Admin Navigation">
-            <a href="/admin/index.php" class="admin-nav-item <?= in_array($current_admin_page, ['index.php', 'dashboard.php']) ? 'active' : '' ?>">
+            <a href="<?= APP_BASE_PATH ?>/admin/index.php" class="admin-nav-item <?= in_array($current_admin_page, ['index.php', 'dashboard.php']) ? 'active' : '' ?>">
                 <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
                 Dashboard
             </a>
-            <a href="/admin/events.php" class="admin-nav-item <?= in_array($current_admin_page, ['events.php', 'event-edit.php', 'attendees.php']) ? 'active' : '' ?>">
+            <a href="<?= APP_BASE_PATH ?>/admin/events.php" class="admin-nav-item <?= in_array($current_admin_page, ['events.php', 'event-edit.php', 'attendees.php']) ? 'active' : '' ?>">
                 <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
                 Manage events
             </a>
-            <a href="/admin/users.php" class="admin-nav-item <?= $current_admin_page === 'users.php' ? 'active' : '' ?>">
+            <a href="<?= APP_BASE_PATH ?>/admin/users.php" class="admin-nav-item <?= $current_admin_page === 'users.php' ? 'active' : '' ?>">
                 <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 Users
             </a>
-            <a href="/admin/comments.php" class="admin-nav-item <?= $current_admin_page === 'comments.php' ? 'active' : '' ?>">
+            <a href="<?= APP_BASE_PATH ?>/admin/comments.php" class="admin-nav-item <?= $current_admin_page === 'comments.php' ? 'active' : '' ?>">
                 <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 Comments
             </a>
-            <a href="/admin/categories.php" class="admin-nav-item <?= $current_admin_page === 'categories.php' ? 'active' : '' ?>">
+            <a href="<?= APP_BASE_PATH ?>/admin/categories.php" class="admin-nav-item <?= $current_admin_page === 'categories.php' ? 'active' : '' ?>">
                 <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                 Categories
             </a>
         </nav>
 
         <div class="admin-sidebar-bottom">
-            <a href="/events.php" class="btn-link" style="font-size:13px; color:var(--text-secondary); display:flex; align-items:center; gap:6px; padding:0; margin-bottom:16px;">
+            <a href="<?= APP_BASE_PATH ?>/events.php" class="btn-link" style="font-size:13px; color:var(--text-secondary); display:flex; align-items:center; gap:6px; padding:0; margin-bottom:16px;">
                 <span>↗ View campus website</span>
             </a>
             <div style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">

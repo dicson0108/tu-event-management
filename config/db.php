@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/app.php';
 // Database configuration
 define('DB_HOST', '127.0.0.1');
 define('DB_NAME', 'tu_event_management');

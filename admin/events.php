@@ -83,7 +83,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
         </p>
     </div>
 
-    <a href="/admin/event-edit.php" class="btn-primary" style="padding: 10px 20px; font-size: 14px;">
+    <a href="<?= APP_BASE_PATH ?>/admin/event-edit.php" class="btn-primary" style="padding: 10px 20px; font-size: 14px;">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Create event
     </a>
@@ -127,7 +127,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
     </div>
 
     <!-- Search & Filters Strip -->
-    <form method="GET" action="/admin/events.php" style="padding: 16px 24px; display:flex; gap:16px; align-items:center;">
+    <form method="GET" action="<?= APP_BASE_PATH ?>/admin/events.php" style="padding: 16px 24px; display:flex; gap:16px; align-items:center;">
         <input type="hidden" name="tab" value="<?= e($tab) ?>">
         <div style="flex-grow:1; position:relative; display:flex; align-items:center;">
             <svg style="position:absolute; left:12px; width:16px; height:16px; color:var(--text-muted);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
@@ -149,7 +149,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
             <option value="cancelled" <?= $status_filter === 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
         </select>
 
-        <a href="/admin/attendees.php?export=all" class="btn-secondary" style="font-size:13px; padding:9px 14px;">
+        <a href="<?= APP_BASE_PATH ?>/admin/attendees.php?export=all" class="btn-secondary" style="font-size:13px; padding:9px 14px;">
             Export
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         </a>
@@ -206,8 +206,8 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
                     </td>
                     <td style="text-align:right;">
                         <div style="display:inline-flex; align-items:center; gap:8px;">
-                            <a href="/admin/attendees.php?id=<?= $ev['id'] ?>" class="action-btn-link">Attendees</a>
-                            <a href="/admin/event-edit.php?id=<?= $ev['id'] ?>" class="action-btn-link" style="color:var(--color-primary); font-weight:600;">Edit</a>
+                            <a href="<?= APP_BASE_PATH ?>/admin/attendees.php?id=<?= $ev['id'] ?>" class="action-btn-link">Attendees</a>
+                            <a href="<?= APP_BASE_PATH ?>/admin/event-edit.php?id=<?= $ev['id'] ?>" class="action-btn-link" style="color:var(--color-primary); font-weight:600;">Edit</a>
 
                             <button type="button" class="action-btn-link <?= $ev['status'] === 'draft' ? 'action-btn-danger' : '' ?>" 
                                     onclick="openDeleteModal(<?= $ev['id'] ?>, '<?= e(addslashes($ev['title'])) ?>')">
@@ -248,7 +248,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
             Registered attendees will be notified. The event will be marked Cancelled and will no longer accept registrations. The record and feedback stay available.
         </p>
 
-        <form method="POST" action="/admin/events.php">
+        <form method="POST" action="<?= APP_BASE_PATH ?>/admin/events.php">
             <?= csrf_field() ?>
             <input type="hidden" name="action" value="cancel">
             <input type="hidden" name="event_id" id="cancel-event-id" value="">
@@ -286,7 +286,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
             Want to keep it for later? Leave it as a draft instead.
         </p>
 
-        <form method="POST" action="/admin/events.php">
+        <form method="POST" action="<?= APP_BASE_PATH ?>/admin/events.php">
             <?= csrf_field() ?>
             <input type="hidden" name="action" value="delete">
             <input type="hidden" name="event_id" id="delete-event-id" value="">

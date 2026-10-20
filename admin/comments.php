@@ -73,7 +73,7 @@ $comments = $db->query("
                             <div style="font-size:12px; color:var(--text-muted);"><?= e($c['user_email']) ?></div>
                         </td>
                         <td>
-                            <a href="/event-detail.php?id=<?= $c['event_id'] ?>" style="color:var(--color-primary); font-weight:600;">
+                            <a href="<?= APP_BASE_PATH ?>/event-detail.php?id=<?= $c['event_id'] ?>" style="color:var(--color-primary); font-weight:600;">
                                 <?= e($c['event_title']) ?>
                             </a>
                         </td>
@@ -89,7 +89,7 @@ $comments = $db->query("
                             <?= e(date('j M Y', strtotime($c['created_at']))) ?>
                         </td>
                         <td style="text-align:right;">
-                            <form method="POST" action="/admin/comments.php" onsubmit="return confirm('Remove this comment?');" style="display:inline;">
+                            <form method="POST" action="<?= APP_BASE_PATH ?>/admin/comments.php" onsubmit="return confirm('Remove this comment?');" style="display:inline;">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="comment_id" value="<?= $c['id'] ?>">
                                 <button type="submit" style="background:none; border:none; color:#dc2626; cursor:pointer; font-size:12.5px; font-weight:600;">

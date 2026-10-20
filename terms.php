@@ -51,7 +51,7 @@ require_once __DIR__ . '/includes/header.php';
                 <ul class="legal-list">
                     <li><strong>One Spot Per Student:</strong> Each student may register for one confirmed seat per event session.</li>
                     <li><strong>FIFO Waitlist:</strong> When an event reaches capacity, waitlist positions are assigned strictly on a First-In, First-Out basis. If a confirmed participant cancels, the first waitlisted member is automatically promoted and notified.</li>
-                    <li><strong>Fair Cancellation Notice:</strong> If you are unable to attend an event you registered for, please cancel your spot via <a href="/my-events.php" style="color:var(--color-primary); font-weight:600;">My Events</a> at least 12 hours prior to start time so your seat can be released to a waitlisted student.</li>
+                    <li><strong>Fair Cancellation Notice:</strong> If you are unable to attend an event you registered for, please cancel your spot via <a href="<?= APP_BASE_PATH ?>/my-events.php" style="color:var(--color-primary); font-weight:600;">My Events</a> at least 12 hours prior to start time so your seat can be released to a waitlisted student.</li>
                 </ul>
             </section>
 

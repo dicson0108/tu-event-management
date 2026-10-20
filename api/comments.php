@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $action = $_POST['action'] ?? '';
-    $redirect = $_POST['redirect'] ?? '/my-events.php';
+    $redirect = $_POST['redirect'] ?? app_url('/my-events.php');
     $db = get_db_connection();
 
     if ($action === 'delete') {
@@ -29,5 +29,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-header("Location: /my-events.php");
+header("Location: " . app_url("/my-events.php"));
 exit;

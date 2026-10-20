@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/auth.php';
-$user = require_login('/my-events.php');
+$user = require_login(app_url('/my-events.php'));
 $page_title = "My events · Good things on the horizon";
 require_once __DIR__ . '/includes/header.php';
 
@@ -52,7 +52,7 @@ $active_tab = $_GET['tab'] ?? 'all';
                 Your joined events, waitlists and memories — all together.
             </p>
         </div>
-        <a href="/events.php" class="btn-secondary">
+        <a href="<?= APP_BASE_PATH ?>/events.php" class="btn-secondary">
             Explore events 
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
@@ -110,7 +110,7 @@ $active_tab = $_GET['tab'] ?? 'all';
         <?php if (empty($display_list)): ?>
             <div style="background:#fff; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:40px; text-align:center;">
                 <p style="color:var(--text-muted); font-size:14px; margin-bottom:16px;">No upcoming events in this view.</p>
-                <a href="/events.php" class="btn-primary">Browse events</a>
+                <a href="<?= APP_BASE_PATH ?>/events.php" class="btn-primary">Browse events</a>
             </div>
         <?php else: ?>
             <?php foreach ($display_list as $ev): ?>
@@ -155,7 +155,7 @@ $active_tab = $_GET['tab'] ?? 'all';
                             </button>
                         <?php endif; ?>
 
-                        <a href="/event-detail.php?id=<?= $ev['id'] ?>" class="btn-secondary" style="font-size:13px; padding:8px 14px;">
+                        <a href="<?= APP_BASE_PATH ?>/event-detail.php?id=<?= $ev['id'] ?>" class="btn-secondary" style="font-size:13px; padding:8px 14px;">
                             View event ↗
                         </a>
                     </div>
@@ -168,31 +168,46 @@ $active_tab = $_GET['tab'] ?? 'all';
     <section style="margin-bottom: 64px;">
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 20px;">
             <h2 style="font-size: 24px; font-weight: 800;">Past experiences</h2>
-            <a href="#" class="btn-link" style="color:var(--color-primary); font-size:13px; font-weight:600;">View all 5 ↗</a>
+            <?php if (!empty($past_events)): ?>
+                <span style="color:var(--text-muted); font-size:13px; font-weight:600;"><?= count($past_events) ?> completed</span>
+            <?php endif; ?>
         </div>
 
-        <!-- Sample past event: Creative Confidence Workshop -->
-        <div class="past-experience-card">
-            <div style="display:flex; align-items:center; gap:20px;">
-                <div class="date-badge-square">
-                    <span class="date-badge-month">OCT</span>
-                    <span class="date-badge-day">03</span>
-                </div>
-                <div>
-                    <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 4px;">Creative Confidence Workshop</h3>
-                    <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 4px;">
-                        3 Oct 2026 · 2:00 PM – 4:00 PM · Design Studio, Block D
-                    </div>
-                    <div style="font-size: 12.5px; color: #065f46; font-weight: 500;">
-                        Attended · Your feedback is welcome
-                    </div>
-                </div>
+        <?php if (empty($past_events)): ?>
+            <div style="background:#fff; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:32px; text-align:center;">
+                <p style="color:var(--text-muted); font-size:14px; margin-bottom:12px;">No past attended events yet.</p>
+                <a href="<?= APP_BASE_PATH ?>/events.php" class="btn-secondary" style="font-size:13px; padding:8px 16px;">Discover events</a>
             </div>
+        <?php else: ?>
+            <?php foreach ($past_events as $pev): ?>
+                <?php 
+                $p_ts = strtotime($pev['event_date']);
+                $p_month = strtoupper(date('M', $p_ts));
+                $p_day = date('d', $p_ts);
+                ?>
+                <div class="past-experience-card" style="margin-bottom: 16px;">
+                    <div style="display:flex; align-items:center; gap:20px;">
+                        <div class="date-badge-square">
+                            <span class="date-badge-month"><?= $p_month ?></span>
+                            <span class="date-badge-day"><?= $p_day ?></span>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 4px;"><?= e($pev['title']) ?></h3>
+                            <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 4px;">
+                                <?= e(format_event_date($pev['event_date'])) ?> · <?= e(format_event_time_range($pev['start_time'], $pev['end_time'])) ?> · <?= e($pev['venue'] ?: 'Online') ?>
+                            </div>
+                            <div style="font-size: 12.5px; color: #065f46; font-weight: 500;">
+                                Attended · Your feedback is welcome
+                            </div>
+                        </div>
+                    </div>
 
-            <a href="/past-event.php?id=7" class="btn-primary" style="font-size: 13px; padding: 8px 16px;">
-                Rate this event ★
-            </a>
-        </div>
+                    <a href="<?= APP_BASE_PATH ?>/event-detail.php?id=<?= $pev['id'] ?>#reviews" class="btn-primary" style="font-size: 13px; padding: 8px 16px;">
+                        Rate this event ★
+                    </a>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </section>
 </div>
 
