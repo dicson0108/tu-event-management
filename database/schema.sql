@@ -2,17 +2,8 @@
 CREATE DATABASE IF NOT EXISTS `tu_event_management` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `tu_event_management`;
 
--- Drop existing tables in reverse dependency order
-SET FOREIGN_KEY_CHECKS = 0;
-DROP TABLE IF EXISTS `comments`;
-DROP TABLE IF EXISTS `registrations`;
-DROP TABLE IF EXISTS `events`;
-DROP TABLE IF EXISTS `categories`;
-DROP TABLE IF EXISTS `users`;
-SET FOREIGN_KEY_CHECKS = 1;
-
 -- Users table
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(100) NOT NULL,
   `preferred_name` VARCHAR(100) NULL,
@@ -27,7 +18,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Categories table
-CREATE TABLE `categories` (
+CREATE TABLE IF NOT EXISTS `categories` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(100) NOT NULL UNIQUE,
   `slug` VARCHAR(100) NOT NULL UNIQUE,
@@ -35,7 +26,7 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Events table
-CREATE TABLE `events` (
+CREATE TABLE IF NOT EXISTS `events` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `title` VARCHAR(200) NOT NULL,
   `description` TEXT NOT NULL,
@@ -62,7 +53,7 @@ CREATE TABLE `events` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Registrations table
-CREATE TABLE `registrations` (
+CREATE TABLE IF NOT EXISTS `registrations` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `event_id` INT NOT NULL,
   `user_id` INT NOT NULL,
@@ -76,7 +67,7 @@ CREATE TABLE `registrations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Comments & Ratings table
-CREATE TABLE `comments` (
+CREATE TABLE IF NOT EXISTS `comments` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `event_id` INT NOT NULL,
   `user_id` INT NOT NULL,

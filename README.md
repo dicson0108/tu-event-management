@@ -38,35 +38,37 @@ A PHP campus event application for Taylor's University students and staff, with 
 - **Backend**: PHP 8.0+ (PDO, prepared statements, session-based auth)
 - **Database**: MariaDB (XAMPP 10.4 series) / MySQL-compatible SQL; the schema uses InnoDB and `utf8mb4`.
 - **Frontend**: Semantic HTML5, CSS3 (Taylor's brand red design system), Vanilla JavaScript (ES6+ fetch/AJAX)
-- **Environment**: Compatible with local PHP built-in server (`php -S`) or XAMPP/WAMP (`htdocs`)
+- **Environment**: XAMPP or MAMP, serving the project from `htdocs`
 
 ---
 
 ## Getting Started
 
-### 1. Prerequisites
-- PHP 8.0 or higher with `pdo_mysql` extension enabled
-- MySQL / MariaDB server running on port `3306`
+These steps assume **XAMPP or MAMP is already installed**, with PHP 8.0+ and `pdo_mysql`. No Composer, npm, terminal commands or manual database import are needed.
 
-### 2. Database Setup
-Import the schema and seed data into your MySQL server:
+### 1. Put the project in `htdocs`
 
-`schema.sql` drops and recreates the application's tables. Use it for initial setup or a deliberate database reset, after backing up any data you need.
+Copy or extract the project into your web server's document root and name the folder **`TUEventManagement`**. It should contain `index.php`, `config/`, `database/` and `assets/` directly, without an extra nested folder.
 
-```bash
-# Using MySQL CLI
-mysql -u root -p < database/schema.sql
-mysql -u root -p < database/seed.sql
-```
+| Installation | Project folder |
+| --- | --- |
+| XAMPP on Windows | `C:\xampp\htdocs\TUEventManagement` |
+| XAMPP on macOS (native installer) | `/Applications/XAMPP/xamppfiles/htdocs/TUEventManagement` |
+| MAMP on macOS | `/Applications/MAMP/htdocs/TUEventManagement` |
+| MAMP on Windows | `C:\MAMP\htdocs\TUEventManagement` |
 
-*(If running via XAMPP MySQL binary in PowerShell):*
-```powershell
-Get-Content database\schema.sql -Raw | & "C:\xampp\mysql\bin\mysql.exe" -u root
-Get-Content database\seed.sql -Raw | & "C:\xampp\mysql\bin\mysql.exe" -u root
-```
+If you changed the document root, use its configured location. For XAMPP-VM, use its mounted `htdocs` directory (inside the VM at `/opt/lampp/htdocs`).
 
-### 3. Database Configuration
-Edit [config/db.php](config/db.php) if your local MySQL credentials differ:
+### 2. Start the servers
+
+In XAMPP's control panel / **Manage Servers**, start **Apache** and **MySQL**. In MAMP, start the web and MySQL servers. Check the ports in your server settings.
+
+The **web port** goes in the browser URL. The **MySQL port** goes in `config/db.php`. They are separate values.
+
+### 3. Edit `config/db.php`
+
+Open [config/db.php](config/db.php) and match these settings to your local database server:
+
 ```php
 define('DB_HOST', '127.0.0.1');
 define('DB_NAME', 'tu_event_management');
@@ -75,28 +77,66 @@ define('DB_PASS', '');
 define('DB_PORT', 3306);
 ```
 
-### 4. Run the Application
-For XAMPP with the project in `C:\xampp\htdocs\TUEventManagement`, open
-`http://localhost/TUEventManagement/`. The shared URL prefix is configured as
-`APP_BASE_PATH` in `config/app.php`. Set it to an empty string when serving the
-project at a domain root, including the built-in PHP server below.
+| Setting | What to enter |
+| --- | --- |
+| `DB_HOST` | Keep `127.0.0.1` when PHP and MySQL run on the same machine or inside the same XAMPP VM. |
+| `DB_NAME` | Keep `tu_event_management`, or choose a new name. The app creates the database automatically if missing. |
+| `DB_USER` | Your MySQL username, commonly `root` for local XAMPP/MAMP. |
+| `DB_PASS` | Your MySQL password: commonly `''` for XAMPP or `'root'` for MAMP. Use your configured password if changed. |
+| `DB_PORT` | Your **MySQL** port: commonly `3306` for XAMPP or `8889` for MAMP. |
 
-Start the built-in PHP development server in the project root:
+For a typical MAMP installation, change these two lines and keep the other settings above:
 
-```bash
-php -S localhost:8000
+```php
+define('DB_PASS', 'root');
+define('DB_PORT', 8889);
 ```
 
-Open your browser and navigate to:
+Check your installation if you changed credentials or ports. MAMP documents its default ports in the [macOS settings](https://documentation.mamp.info/en/MAMP-Mac/Reference/Settings/Ports/) and [Windows settings](https://documentation.mamp.info/en/MAMP-Windows/Preferences/Ports/).
+
+### 4. Open the website
+
+Use your web server's port and the project folder name:
+
+| Web port | Application URL |
+| --- | --- |
+| `80` (typical XAMPP default) | [http://localhost/TUEventManagement/](http://localhost/TUEventManagement/) |
+| `8080` (example custom XAMPP port or VM forwarding port) | [http://localhost:8080/TUEventManagement/](http://localhost:8080/TUEventManagement/) |
+| `8888` (typical MAMP default) | [http://localhost:8888/TUEventManagement/](http://localhost:8888/TUEventManagement/) |
+
+The first database-backed page load creates the configured database, builds its tables and loads demo users, events, registrations and reviews. **You do not need to create a database in phpMyAdmin or import SQL files.** Sign in using a [test account](#test-accounts) below.
+
+Your MySQL account must be allowed to create the database and tables during setup. A fresh installation receives an `app_setup` table that records completion. Later visits preserve your data without reimporting demo records. Existing installations with all five application tables are also preserved.
+
+If setup encounters an unrelated or incomplete database, it stops rather than replacing existing tables; choose a new `DB_NAME` for a separate installation. Keep the SQL files in `database/` because first setup reads them. The schema creates missing tables without dropping existing ones. Setup is not a reset or migration tool; failed initial seed changes roll back and setup can retry on the next request.
+
+With the folder named `TUEventManagement`, keep the existing value in [config/app.php](config/app.php):
+
+```php
+const APP_BASE_PATH = '/TUEventManagement';
 ```
-http://localhost:8000
-```
+
+No `app.php` change is needed for the layouts above. If you choose another folder name, update this path to match it. Keep the hostname and web port in the browser URL, not in `APP_BASE_PATH`.
+
+### Troubleshooting
+
+| Problem | What to check |
+| --- | --- |
+| Page cannot be reached | Start the web server and use its actual port. With XAMPP-VM, use the HTTP forwarding rule's Mac-side port. |
+| Page not found | Confirm the project is directly inside the configured `htdocs`, with `index.php` in `TUEventManagement`. |
+| Database connection or setup failed | Start MySQL and check all five settings in `config/db.php`. Use the MySQL port, not Apache's port. |
+| Access denied / cannot create database or tables | Check credentials and setup permissions. MAMP commonly uses `root` / `root`; XAMPP commonly uses `root` with an empty password. |
+| Incomplete or unrelated schema | Change `DB_NAME` to a new name. The existing database is left intact. |
+| Missing styles or broken links | Match `APP_BASE_PATH` to the project folder, preserving its leading `/`. |
+| `could not find driver` | Enable `pdo_mysql` for the PHP version selected by XAMPP/MAMP and restart the web server. |
+
+See the [XAMPP macOS FAQ](https://www.apachefriends.org/faq_osx.html) for native and VM configuration details. Setup has been tested using an isolated MariaDB server on Windows; the macOS/MAMP instructions have not been executed on those systems as part of this change.
 
 ---
 
 ## Test Accounts
 
-All pre-seeded test accounts use the password: `Password123!`
+These accounts are created automatically on a fresh installation. All use the password: `Password123!`
 
 | Role | Name | Email | Permissions |
 |---|---|---|---|
@@ -134,9 +174,10 @@ All pre-seeded test accounts use the password: `Password123!`
 │   └── uploads/               # Uploaded event posters
 ├── config/
 │   ├── app.php                # Installation URL prefix and app_url()
-│   └── db.php                 # PDO database connection helper
+│   ├── db.php                 # Local database settings and PDO connection
+│   └── setup.php              # First-run database and demo-data initialization
 ├── database/
-│   ├── schema.sql             # Table definitions and constraints
+│   ├── schema.sql             # Non-destructive table definitions
 │   └── seed.sql               # Pre-populated events, users, reviews, waitlists
 ├── includes/
 │   ├── auth.php               # Authentication, session, role guards
@@ -158,6 +199,12 @@ All pre-seeded test accounts use the password: `Password123!`
 ```
 
 ---
+
+## Database Setup Tests
+
+For contributors: `php tests/database-setup.php <port>` runs integration checks against a **disposable local MySQL/MariaDB server** with a passwordless root account. Use a dedicated non-default port, such as `33079`. The suite creates and removes randomly named `tu_setup_test_*` databases, independently of the application configuration.
+
+Checks cover first creation, custom names, repeated visits, legacy data preservation, incomplete schemas, seed rollback/retry, interrupted setup markers and concurrent first requests.
 
 ## License
 MIT License. Developed for Taylor's University event management.
