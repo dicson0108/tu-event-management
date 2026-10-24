@@ -79,7 +79,10 @@ $page_css = $css_map[$current_page] ?? null;
                             </a>
                         <?php endif; ?>
                         <div class="dropdown-divider"></div>
-                        <a href="<?= APP_BASE_PATH ?>/logout.php" class="dropdown-item text-danger" role="menuitem">Log out</a>
+                        <form method="POST" action="<?= APP_BASE_PATH ?>/logout.php">
+                            <?= csrf_field() ?>
+                            <button type="submit" class="dropdown-item text-danger" role="menuitem" style="width:100%; border:0; background:none; font:inherit; text-align:left; cursor:pointer;">Log out</button>
+                        </form>
                     </div>
                 </div>
             <?php else: ?>
@@ -123,7 +126,10 @@ $page_css = $css_map[$current_page] ?? null;
                 <a href="<?= APP_BASE_PATH ?>/admin/index.php" class="mobile-nav-link" style="color:var(--color-primary); font-weight:700;">Admin Workspace ↗</a>
             <?php endif; ?>
             <div class="mobile-drawer-footer">
-                <a href="<?= APP_BASE_PATH ?>/logout.php" class="btn-secondary" style="width:100%; justify-content:center; color:#dc2626;">Log out</a>
+                <form method="POST" action="<?= APP_BASE_PATH ?>/logout.php">
+                    <?= csrf_field() ?>
+                    <button type="submit" class="btn-secondary" style="width:100%; justify-content:center; color:#dc2626;">Log out</button>
+                </form>
             </div>
         <?php else: ?>
             <div class="mobile-drawer-auth">

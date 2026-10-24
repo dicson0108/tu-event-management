@@ -200,7 +200,17 @@ These accounts are created automatically on a fresh installation. All use the pa
 
 ---
 
+## Error Pages
+
+`403.php`, `404.php` and `500.php` share a standalone layout that works without a database connection. Missing events and drafts hidden from the current user use the 404 page; restricted admin access uses 403. Unhandled PHP exceptions and database failures show a generic 500 page and log technical details on the server. API exceptions return JSON.
+
+Apache uses the included `.htaccess` for missing URLs and server-generated errors. Allow `FileInfo` overrides for this project (the standard XAMPP configuration allows them). If you change `APP_BASE_PATH` or the installation folder, also update the three `ErrorDocument` paths in `.htaccess`. Broken Apache configuration or a stopped PHP service may prevent custom error pages from loading.
+
+Run `python tests/error-pages.py --xampp C:/xampp` for isolated Apache checks. The test starts a temporary site on an available local port and requires no database server.
+
 ## Database Setup Tests
+
+HTTP workflow regressions are available with `python tests/workflows.py --db-port 33079 --php C:/xampp/php/php.exe`. Python 3 and a disposable local database server are required for this development check; neither is required to run the website. Use a dedicated non-default database port with a passwordless local root account. The script copies the application to a temporary directory, adjusts that copy's database port, starts two temporary PHP HTTP servers and verifies authentication, event access, feedback, capacity, waitlists, rollback and logout. It resets fixture records in `tu_event_management` on the selected disposable server. Never point it at a server containing data you need to retain.
 
 For contributors: `php tests/database-setup.php <port>` runs integration checks against a **disposable local MySQL/MariaDB server** with a passwordless root account. Use a dedicated non-default port, such as `33079`. The suite creates and removes randomly named `tu_setup_test_*` databases, independently of the application configuration.
 

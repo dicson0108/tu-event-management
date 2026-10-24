@@ -1,0 +1,4 @@
+# Paths are relative to the web root. Update if APP_BASE_PATH changes.
+ErrorDocument 403 /TUEventManagement/403.php
+ErrorDocument 404 /TUEventManagement/404.php
+ErrorDocument 500 /TUEventManagement/500.php

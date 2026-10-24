@@ -20,8 +20,10 @@ $where = ["e.status = 'published'"];
 $params = [];
 
 if ($search !== '') {
-    $where[] = "(e.title LIKE :search OR e.description LIKE :search OR e.organiser_name LIKE :search OR e.venue LIKE :search)";
-    $params[':search'] = "%{$search}%";
+    $where[] = "(e.title LIKE :search_title OR e.description LIKE :search_description OR e.organiser_name LIKE :search_organiser OR e.venue LIKE :search_venue)";
+    foreach (['title', 'description', 'organiser', 'venue'] as $field) {
+        $params[':search_' . $field] = "%{$search}%";
+    }
 }
 
 if ($category_slug !== '') {

@@ -9,3 +9,9 @@ function app_url(string $path): string {
     }
     return APP_BASE_PATH . '/' . ltrim($path, '/');
 }
+
+require_once __DIR__ . '/../includes/error.php';
+if (PHP_SAPI !== 'cli') {
+    ob_start();
+    set_exception_handler('handle_app_exception');
+}

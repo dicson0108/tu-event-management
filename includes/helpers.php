@@ -21,7 +21,7 @@ function format_event_time(string $time_str): string {
 }
 
 function format_event_time_range(string $start_time, string $end_time): string {
-    return format_event_time($start_time) . ' – ' . format_event_time($end_time) . ' · MYT';
+    return format_event_time($start_time) . ' - ' . format_event_time($end_time) . ' · MYT';
 }
 
 function get_initials(string $name): string {
@@ -82,57 +82,80 @@ function get_user_event_status(int $event_id, ?int $user_id): ?array {
     return $reg ?: null;
 }
 
-// Auto-promote first waitlisted attendee (FIFO) when seat frees up
-function promote_first_waitlisted(int $event_id): ?int {
+// Registration writers lock the event before reading capacity or changing seats.
+function with_event_lock(int $event_id, callable $operation) {
     $db = get_db_connection();
-    
-    // Check if seats are currently available
-    $seat_info = get_event_seat_info($event_id);
-    if ($seat_info['seats_left'] <= 0) {
-        return null;
+    $owns_transaction = !$db->inTransaction();
+    if ($owns_transaction) $db->beginTransaction();
+    try {
+        $stmt = $db->prepare('SELECT * FROM events WHERE id = :id FOR UPDATE');
+        $stmt->execute([':id' => $event_id]);
+        $result = $operation($db, $stmt->fetch() ?: null);
+        if ($owns_transaction) $db->commit();
+        return $result;
+    } catch (Throwable $error) {
+        if ($owns_transaction && $db->inTransaction()) $db->rollBack();
+        throw $error;
     }
-    
-    // Find next in line (lowest waitlist_position or earliest created_at)
-    $stmt = $db->prepare("
-        SELECT id, user_id FROM registrations 
-        WHERE event_id = :event_id AND status = 'waitlisted' 
-        ORDER BY waitlist_position ASC, created_at ASC 
-        LIMIT 1
-    ");
-    $stmt->execute([':event_id' => $event_id]);
-    $next = $stmt->fetch();
-    
-    if (!$next) {
-        return null;
-    }
-    
-    // Promote user to confirmed
-    $upd = $db->prepare("UPDATE registrations SET status = 'confirmed', waitlist_position = NULL, updated_at = NOW() WHERE id = :id");
-    $upd->execute([':id' => $next['id']]);
-    
-    // Recalculate remaining waitlist positions
-    reindex_waitlist_positions($event_id);
-    
-    return (int) $next['user_id'];
+}
+
+// Auto-promote first waitlisted attendee (FIFO) when seat frees up.
+function promote_first_waitlisted(int $event_id): ?int {
+    return with_event_lock($event_id, function (PDO $db, ?array $event) use ($event_id): ?int {
+        if (!$event || $event['status'] !== 'published' || $event['event_date'] < date('Y-m-d')) {
+            reindex_waitlist_positions($event_id);
+            return null;
+        }
+
+        // Check if seats are currently available
+        $seat_info = get_event_seat_info($event_id);
+        if ($seat_info['seats_left'] <= 0) {
+            return null;
+        }
+
+        // Find next in line (lowest waitlist_position or earliest created_at)
+        $stmt = $db->prepare("
+            SELECT id, user_id FROM registrations
+            WHERE event_id = :event_id AND status = 'waitlisted'
+            ORDER BY waitlist_position ASC, created_at ASC
+            LIMIT 1
+        ");
+        $stmt->execute([':event_id' => $event_id]);
+        $next = $stmt->fetch();
+
+        if (!$next) {
+            return null;
+        }
+
+        // Promote user to confirmed
+        $upd = $db->prepare("UPDATE registrations SET status = 'confirmed', waitlist_position = NULL, updated_at = NOW() WHERE id = :id");
+        $upd->execute([':id' => $next['id']]);
+
+        // Recalculate remaining waitlist positions
+        reindex_waitlist_positions($event_id);
+
+        return (int) $next['user_id'];
+    });
 }
 
 // Reindex waitlist positions 1, 2, 3...
 function reindex_waitlist_positions(int $event_id): void {
-    $db = get_db_connection();
-    $stmt = $db->prepare("
-        SELECT id FROM registrations 
-        WHERE event_id = :event_id AND status = 'waitlisted' 
-        ORDER BY waitlist_position ASC, created_at ASC
-    ");
-    $stmt->execute([':event_id' => $event_id]);
-    $rows = $stmt->fetchAll();
-    
-    $upd = $db->prepare("UPDATE registrations SET waitlist_position = :pos WHERE id = :id");
-    $pos = 1;
-    foreach ($rows as $r) {
-        $upd->execute([':pos' => $pos, ':id' => $r['id']]);
-        $pos++;
-    }
+    with_event_lock($event_id, function (PDO $db) use ($event_id): void {
+        $stmt = $db->prepare("
+            SELECT id FROM registrations
+            WHERE event_id = :event_id AND status = 'waitlisted'
+            ORDER BY waitlist_position ASC, created_at ASC
+        ");
+        $stmt->execute([':event_id' => $event_id]);
+        $rows = $stmt->fetchAll();
+
+        $upd = $db->prepare("UPDATE registrations SET waitlist_position = :pos WHERE id = :id");
+        $pos = 1;
+        foreach ($rows as $r) {
+            $upd->execute([':pos' => $pos, ':id' => $r['id']]);
+            $pos++;
+        }
+    });
 }
 
 // Calculate rating info for an event
@@ -238,4 +261,3 @@ function get_site_logo_html(): string {
     }
     return $logo_html;
 }
-

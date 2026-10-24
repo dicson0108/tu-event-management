@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/includes/csrf.php';
+require_once __DIR__ . '/includes/helpers.php';
 
 $db = get_db_connection();
 $user = current_user();
@@ -16,10 +18,8 @@ $stmt = $db->prepare("
 $stmt->execute([':id' => $event_id]);
 $event = $stmt->fetch();
 
-if (!$event) {
-    echo '<div class="app-container" style="padding: 64px 0; text-align:center;"><h2>Event not found</h2><p><a href="' . app_url('/events.php') . '" class="btn-primary" style="margin-top:16px;">Back to events</a></p></div>';
-    require_once __DIR__ . '/includes/footer.php';
-    exit;
+if (!$event || ($event['status'] === 'draft' && (!$user || $user['role'] !== 'admin'))) {
+    render_error_page(404);
 }
 
 $page_title = $event['title'];
@@ -47,7 +47,14 @@ if ($user_id) {
 
 // Handle feedback submit
 $feedback_msg = null;
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'save_feedback' && verify_csrf_token($_POST['csrf_token'] ?? '')) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_feedback') {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        http_response_code(400);
+        exit('Invalid or expired CSRF token.');
+    }
+    if (!$user_id || !$attendance || !$is_past || !in_array($event['status'], ['published', 'completed'], true)) {
+        render_error_page(403);
+    }
     $rating = (int)($_POST['rating'] ?? 5);
     $comment_text = trim($_POST['comment'] ?? '');
     if ($rating >= 1 && $rating <= 5 && !empty($comment_text) && $user_id) {
@@ -76,6 +83,7 @@ $stmt = $db->prepare("
 ");
 $stmt->execute([':eid' => $event_id]);
 $comments = $stmt->fetchAll();
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="app-container" style="padding-top: 24px;">
@@ -145,7 +153,7 @@ $comments = $stmt->fetchAll();
                     </div>
                 <?php endif; ?>
 
-                <?php if ($attendance && $is_past): ?>
+                <?php if ($attendance && $is_past && in_array($event['status'], ['published', 'completed'], true)): ?>
                     <div class="info-card-box" id="feedback-form" style="margin-bottom: 28px;">
                         <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 8px;"><?= $user_comment ? 'Edit your review' : 'Rate this event' ?></h3>
                         <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 20px;">

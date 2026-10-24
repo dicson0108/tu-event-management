@@ -82,8 +82,7 @@ function require_login(?string $redirect = null): array {
 function require_admin(): array {
     $user = require_login();
     if ($user['role'] !== 'admin') {
-        http_response_code(403);
-        die("403 Forbidden: Administrator access required.");
+        render_error_page(403);
     }
     return $user;
 }

@@ -1,0 +1,133 @@
+.error-page {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.error-header,
+.error-footer {
+  padding: 28px max(24px, env(safe-area-inset-right)) 28px max(24px, env(safe-area-inset-left));
+}
+
+.error-header {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+}
+
+.error-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: var(--radius-xs);
+  touch-action: manipulation;
+}
+
+.error-brand:hover strong {
+  color: var(--color-primary);
+}
+
+.error-brand img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.error-brand strong,
+.error-brand span span {
+  display: block;
+}
+
+.error-brand strong {
+  font-size: 22px;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.error-brand span span {
+  margin-top: 4px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.error-main {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 40px 24px 72px;
+  scroll-margin-top: 24px;
+}
+
+.error-content {
+  max-width: 560px;
+  text-align: center;
+}
+
+.error-code {
+  color: var(--color-primary);
+  font-size: clamp(100px, 20vw, 176px);
+  font-weight: 700;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: -0.065em;
+  line-height: 1;
+}
+
+.error-content h1 {
+  margin-top: 24px;
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.error-description {
+  max-width: 440px;
+  margin: 18px auto 0;
+  color: var(--text-secondary);
+  font-size: 17px;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.error-actions a {
+  min-height: 48px;
+  touch-action: manipulation;
+  transition: transform 100ms ease;
+}
+
+.error-footer {
+  color: var(--text-muted);
+  font-size: 12px;
+  text-align: center;
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+
+.error-footer span {
+  margin-inline: 6px;
+}
+
+@media (max-width: 380px) {
+  .error-actions {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .error-page *,
+  .error-page *::before,
+  .error-page *::after {
+    transition: none;
+    animation: none;
+    scroll-behavior: auto;
+  }
+}

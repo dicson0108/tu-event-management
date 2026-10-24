@@ -18,14 +18,9 @@ function get_db_connection(): PDO {
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES   => false,
         ];
-        try {
-            $connection = new PDO($dsn, DB_USER, DB_PASS, $options);
-            initialize_database($connection, DB_NAME);
-            $pdo = $connection;
-        } catch (Throwable $e) {
-            http_response_code(500);
-            die("Database connection or setup failed. Check config/db.php and ensure your MySQL account can create the database and tables. " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8'));
-        }
+        $connection = new PDO($dsn, DB_USER, DB_PASS, $options);
+        initialize_database($connection, DB_NAME);
+        $pdo = $connection;
     }
     return $pdo;
 }

@@ -52,35 +52,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf_token($_POST['csrf_toke
     $action = $_POST['action'] ?? '';
     $reg_id = (int)($_POST['reg_id'] ?? 0);
 
-    if ($action === 'remove' && $reg_id > 0) {
-        // Find registration
-        $stmt = $db->prepare("SELECT event_id, status FROM registrations WHERE id = :id");
+    if (in_array($action, ['remove', 'promote'], true) && $reg_id > 0) {
+        $stmt = $db->prepare('SELECT event_id FROM registrations WHERE id = :id');
         $stmt->execute([':id' => $reg_id]);
-        $target = $stmt->fetch();
-
-        if ($target) {
-            $stmt = $db->prepare("DELETE FROM registrations WHERE id = :id");
-            $stmt->execute([':id' => $reg_id]);
-
-            if ($target['status'] === 'confirmed') {
-                // Auto promote first in waitlist!
-                promote_first_waitlisted((int)$target['event_id']);
-            } else {
-                reindex_waitlist_positions((int)$target['event_id']);
-            }
-            $msg = "Attendee removed.";
+        $target_event = (int)$stmt->fetchColumn();
+        try {
+            $msg = with_event_lock($target_event, function (PDO $db, ?array $event) use ($reg_id, $action, $target_event): string {
+                // Re-read the registration after taking the event lock.
+                $stmt = $db->prepare('SELECT status FROM registrations WHERE id = :id AND event_id = :eid');
+                $stmt->execute([':id' => $reg_id, ':eid' => $target_event]);
+                $status = $stmt->fetchColumn();
+                if (!$event || !$status) return 'Registration not found.';
+                if ($action === 'promote') {
+                    $seats = get_event_seat_info($target_event);
+                    if ($status !== 'waitlisted' || $seats['is_full'] || $event['status'] !== 'published' || $event['event_date'] < date('Y-m-d')) {
+                        return 'Promotion requires a waitlisted participant and an available seat at an open event.';
+                    }
+                    $stmt = $db->prepare("UPDATE registrations SET status = 'confirmed', waitlist_position = NULL, updated_at = NOW() WHERE id = :id");
+                    $stmt->execute([':id' => $reg_id]);
+                    reindex_waitlist_positions($target_event);
+                    return 'Waitlisted attendee manually promoted to confirmed.';
+                }
+                $stmt = $db->prepare('DELETE FROM registrations WHERE id = :id');
+                $stmt->execute([':id' => $reg_id]);
+                if ($status === 'confirmed') promote_first_waitlisted($target_event);
+                else reindex_waitlist_positions($target_event);
+                return 'Attendee removed.';
+            });
+        } catch (Throwable $error) {
+            error_log('Attendee update failed: ' . $error->getMessage());
+            http_response_code(500);
+            $msg = 'Attendee could not be updated. Please try again.';
         }
-    } elseif ($action === 'promote' && $reg_id > 0) {
-        $stmt = $db->prepare("UPDATE registrations SET status = 'confirmed', waitlist_position = NULL, updated_at = NOW() WHERE id = :id");
-        $stmt->execute([':id' => $reg_id]);
-
-        // Find event_id to reindex
-        $stmt = $db->prepare("SELECT event_id FROM registrations WHERE id = :id");
-        $stmt->execute([':id' => $reg_id]);
-        $ev_id = (int)$stmt->fetchColumn();
-        if ($ev_id) reindex_waitlist_positions($ev_id);
-
-        $msg = "Waitlisted attendee manually promoted to confirmed.";
     }
 }
 
