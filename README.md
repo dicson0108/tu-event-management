@@ -151,6 +151,12 @@ These accounts are created automatically on a fresh installation. All use the pa
 
 ```
 .
+├── .gitignore                 # Shared exclusions for uploads and temporary files
+├── .htaccess                  # Apache routing for 403, 404 and 500 errors
+├── 403.php                    # Access-denied page
+├── 404.php                    # Page-not-found page
+├── 500.php                    # Server-error page
+├── README.md                  # Setup, project structure and development checks
 ├── admin/                     # Administrator workspace pages
 │   ├── attendees.php          # Attendee roster, CSV export, manual promotions
 │   ├── categories.php         # Category management
@@ -166,14 +172,25 @@ These accounts are created automatically on a fresh installation. All use the pa
 │   └── register-event.php     # Join/leave event, waitlist queuing & auto-promotion
 ├── assets/
 │   ├── css/
-│   │   ├── style.css          # Shared design system
-│   │   └── *.css              # Page styles for home, events, auth, profile, legal, admin
-│   ├── images/                # Bundled posters, avatars and logo
+│   │   ├── admin.css          # Administrator workspace
+│   │   ├── auth.css           # Login and registration
+│   │   ├── errors.css         # Shared standalone error-page layout
+│   │   ├── event-detail.css   # Event detail and registration card
+│   │   ├── events.css         # Event discovery
+│   │   ├── home.css           # Landing page
+│   │   ├── legal.css          # Privacy and terms
+│   │   ├── my-events.css      # Registered events and waitlists
+│   │   ├── profile.css        # Account profile
+│   │   └── style.css          # Shared design system
+│   ├── images/
+│   │   ├── avatars/           # Bundled user avatars
+│   │   ├── events/            # Bundled event posters
+│   │   └── logo/              # Site logo
 │   ├── js/
 │   │   └── main.js            # Client-side interactions and AJAX
-│   └── uploads/               # Uploaded event posters
+│   └── uploads/               # Uploaded posters; only .gitkeep is tracked
 ├── config/
-│   ├── app.php                # Installation URL prefix and app_url()
+│   ├── app.php                # URL prefix, app_url() and exception-handler setup
 │   ├── db.php                 # Local database settings and PDO connection
 │   └── setup.php              # First-run database and demo-data initialization
 ├── database/
@@ -182,14 +199,19 @@ These accounts are created automatically on a fresh installation. All use the pa
 ├── includes/
 │   ├── auth.php               # Authentication, session, role guards
 │   ├── csrf.php               # CSRF token generation and validation
+│   ├── error.php              # Shared error renderer and exception handler
 │   ├── footer.php             # Global public footer
 │   ├── header.php             # Global navbar and user menu
-│   └── helpers.php            # Date/seat formatting, FIFO waitlist promotion, poster art
+│   └── helpers.php            # Formatting, event locks, waitlist promotion and poster art
+├── tests/
+│   ├── database-setup.php      # Disposable-database setup integration checks
+│   ├── error-pages.py         # Isolated Apache error-page HTTP checks
+│   └── workflows.py           # HTTP authentication, feedback and registration checks
 ├── event-detail.php           # Event detail view and sticky registration card
 ├── events.php                 # Explore and search events
 ├── index.php                  # Landing home page
 ├── login.php                  # User and admin login
-├── logout.php                 # Session termination
+├── logout.php                 # CSRF-protected POST session termination
 ├── my-events.php              # User registrations and waitlists
 ├── past-event.php             # Legacy 301 redirect to Event Detail reviews
 ├── privacy.php                # Public privacy page
